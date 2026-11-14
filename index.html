@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#126c60">
+  <meta name="description" content="Ôn tập 180 câu Nhập môn Khoa học dữ liệu và Trí tuệ nhân tạo, có chấm điểm, đếm ngược và giải thích đáp án. Chạy hoàn toàn ngoại tuyến.">
+  <title>Ôn tập KHDL & TTNT · 180 câu trắc nghiệm</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23126c60'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-size='30' font-weight='700' fill='white'%3EAI%3C/text%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f3; --surface: #fff; --ink: #1d3032; --muted: #617172;
+      --line: #dce5df; --accent: #126c60; --accent-hover: #0c544a;
+      --accent-light: #eaf5ef; --red: #ad3346; --red-bg: #fff0f2;
+      --amber: #856017; --amber-bg: #fff6df; --shadow: 0 12px 36px #1b353409;
+      --radius: 20px;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; background: var(--bg); color: var(--ink); line-height: 1.6; }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    button, a, input, select { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible {
+      outline: 3px solid #407bb5; outline-offset: 4px;
+    }
+    button:disabled { cursor: default; }
+    h1, h2, h3, p { margin: 0; }
+    h1, h2, h3 { line-height: 1.3; }
+    h1 { font-size: clamp(2.1rem, 4.5vw, 3.6rem); letter-spacing: -.04em; font-weight: 760; }
+    a { color: var(--accent); }
+    .wrap { max-width: 1240px; margin: auto; padding-inline: 32px; }
+    .site-header { border-bottom: 1px solid var(--line); background: #ffffffd9; }
+    .header-inner { min-height: 86px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 13px; }
+    .brand-mark { width: 44px; height: 44px; border-radius: 13px; background: var(--accent); color: white; display: grid; place-items: center; font-weight: 800; letter-spacing: -.04em; font-size: 19px; }
+    .brand-title { font-weight: 750; font-size: 17px; line-height: 1.4; }
+    .brand-subtitle { font-size: 12px; color: var(--muted); letter-spacing: .03em; }
+    .offline-pill { display: flex; align-items: center; gap: 8px; color: var(--accent); font-size: 12px; font-weight: 650; white-space: nowrap; }
+    .offline-pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #308670; }
+    main { padding-block: 44px 32px; min-height: calc(100vh - 160px); }
+    .eyebrow { color: var(--accent); font-size: 11px; font-weight: 750; letter-spacing: .14em; text-transform: uppercase; }
+    .muted { color: var(--muted); }
+    .small { font-size: 13px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .button { border: 1px solid transparent; border-radius: 11px; padding: 11px 19px; min-height: 46px; font-size: 14px; font-weight: 650; display: inline-flex; align-items: center; justify-content: center; gap: 10px; transition: background .15s, transform .15s; }
+    .button.primary { background: var(--accent); color: #fff; }
+    .button.primary:hover { background: var(--accent-hover); }
+    .button.secondary { background: #fff; border-color: var(--line); color: var(--ink); }
+    .button.secondary:hover { background: #f0f5f1; border-color: #a5c4b6; }
+    .button.quiet { background: transparent; color: var(--accent); }
+    .button.quiet:hover { background: var(--accent-light); }
+    .button:disabled { opacity: .45; }
+    .button.full { width: 100%; }
+    .button-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .setup-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 60px; align-items: start; }
+    .hero { padding-top: 20px; }
+    .hero h1 { margin-top: 18px; }
+    .hero h1 span { color: var(--accent); }
+    .hero-description { max-width: 480px; margin-top: 20px; color: var(--muted); font-size: 16px; line-height: 1.85; }
+    .hero-counts { display: flex; gap: 35px; padding: 26px 0; margin: 26px 0; border-block: 1px solid var(--line); }
+    .hero-counts strong { display: block; font-size: 30px; line-height: 1.2; font-weight: 720; letter-spacing: -.03em; }
+    .hero-counts span { font-size: 12px; color: var(--muted); }
+    .howto { display: grid; gap: 18px; }
+    .howto-item { display: flex; align-items: flex-start; gap: 12px; }
+    .step { border: 1px solid #ccded2; color: var(--accent); border-radius: 9px; width: 29px; height: 29px; flex: 0 0 29px; display: grid; place-items: center; font-size: 12px; font-weight: 700; }
+    .howto-item strong { font-size: 14px; }
+    .howto-item p { font-size: 13px; color: var(--muted); margin-top: 3px; }
+    .setup-card { padding: 30px; }
+    .setup-card h2 { font-size: 23px; letter-spacing: -.02em; margin-bottom: 5px; }
+    .setup-form { margin-top: 26px; }
+    .field { margin-bottom: 20px; min-width: 0; }
+    .field label, .field-label { display: block; font-size: 13px; font-weight: 650; margin-bottom: 7px; }
+    .field input[type=number], .field select, .map-select {
+      width: 100%; border: 1px solid #cfdcd5; border-radius: 10px; min-height: 46px; padding: 10px 12px;
+      color: var(--ink); background: #fff; font-size: 14px;
+    }
+    .field select { text-overflow: ellipsis; }
+    .field-hint { margin-top: 5px; color: var(--muted); font-size: 12px; }
+    .field-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .toggle-line { display: flex; align-items: center; justify-content: space-between; gap: 20px; border-block: 1px solid var(--line); padding: 16px 0; margin: 2px 0 22px; }
+    .toggle-line label { font-size: 14px; font-weight: 600; cursor: pointer; }
+    .toggle-line label small { display: block; font-size: 12px; font-weight: 400; color: var(--muted); margin-top: 2px; }
+    .toggle-line input { width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer; }
+    .start-description { font-size: 12px; color: var(--muted); text-align: center; margin-top: 12px; }
+    .info-note { background: #f3f7f2; border-radius: 11px; padding: 12px 14px; margin-top: 20px; font-size: 12px; color: var(--muted); }
+    .reference-details { margin-top: 32px; padding: 18px 22px; box-shadow: none; }
+    .reference-details summary { cursor: pointer; font-size: 13px; font-weight: 650; }
+    .reference-content { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; font-size: 12px; color: var(--muted); }
+    .reference-content h3 { font-size: 13px; margin-bottom: 9px; color: var(--ink); }
+    .reference-content ul { padding-left: 20px; margin: 0; }
+    .reference-content li + li { margin-top: 7px; }
+    .notice { border: 1px solid #bfd6c8; background: var(--accent-light); border-radius: 13px; padding: 14px 18px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; gap: 15px; font-size: 14px; }
+    .quiz-top { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 23px; }
+    .quiz-top h1 { font-size: 24px; letter-spacing: -.025em; margin-top: 5px; }
+    .top-metrics { display: flex; gap: 12px; flex-shrink: 0; }
+    .metric { border: 1px solid var(--line); background: #fff; padding: 9px 17px; border-radius: 12px; min-width: 126px; }
+    .metric-label { display: block; font-size: 10px; font-weight: 700; letter-spacing: .05em; color: var(--muted); text-transform: uppercase; }
+    .metric strong { display: block; font-size: 22px; font-variant-numeric: tabular-nums; line-height: 1.5; letter-spacing: -.03em; }
+    .timer-metric { background: var(--accent-light); border-color: #c5ddce; }
+    .timer-metric strong { color: var(--accent); }
+    .timer-metric.urgent { background: var(--red-bg); border-color: #efb9c2; }
+    .timer-metric.urgent strong { color: var(--red); }
+    .quiz-layout { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 24px; align-items: start; }
+    .question-card { padding: 30px; }
+    .question-heading-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+    .question-counter { color: var(--muted); font-size: 13px; }
+    .question-counter strong { color: var(--ink); font-size: 15px; }
+    .type-pill { color: var(--accent); background: var(--accent-light); border: 1px solid #d5e8dc; padding: 4px 10px; border-radius: 7px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .type-pill.multiple { color: var(--amber); background: var(--amber-bg); border-color: #ecdfba; }
+    .question-topic { font-size: 11px; color: var(--muted); margin-bottom: 9px; }
+    .question-title { font-size: 21px; font-weight: 650; line-height: 1.55; letter-spacing: -.018em; scroll-margin-top: 25px; }
+    .question-title:focus, .feedback:focus, #resultHeading:focus { outline: none; }
+    .selection-hint { font-size: 12px; color: var(--muted); margin: 11px 0 21px; min-height: 19px; }
+    .options { display: grid; gap: 11px; }
+    .option { width: 100%; display: flex; align-items: flex-start; gap: 13px; padding: 15px; border-radius: 12px; border: 1px solid var(--line); background: #fff; text-align: left; color: var(--ink); line-height: 1.6; font-size: 14px; transition: border-color .15s, background .15s; }
+    .option:not(:disabled):hover { border-color: #7faf9a; background: #f7faf6; }
+    .option-letter { width: 29px; height: 29px; min-width: 29px; border: 1px solid #d7dfdb; border-radius: 8px; display: grid; place-items: center; font-size: 12px; font-weight: 750; background: #f7f9f6; line-height: 1; }
+    .option-copy { flex: 1; padding-top: 2px; }
+    .option-badge { display: block; font-size: 11px; font-weight: 700; margin-top: 5px; }
+    .option.selected { background: #edf5f1; border-color: #6d9e89; }
+    .option.selected .option-letter { color: white; background: var(--accent); border-color: var(--accent); }
+    .option.is-correct { border-color: #6faa8a; background: #eff8f0; }
+    .option.is-correct .option-letter { background: #26764c; border-color: #26764c; color: white; }
+    .option.is-correct .option-badge { color: #256342; }
+    .option.is-wrong { border-color: #dd9ca8; background: var(--red-bg); }
+    .option.is-wrong .option-letter { background: var(--red); border-color: var(--red); color: white; }
+    .option.is-wrong .option-badge { color: var(--red); }
+    .option:disabled { opacity: 1; }
+    .feedback { padding: 19px 20px; margin-top: 24px; border: 1px solid #c0dac9; border-left: 4px solid var(--accent); border-radius: 12px; background: #f2f8f2; scroll-margin-top: 25px; }
+    .feedback.wrong { border-color: #e1b5bd; border-left-color: var(--red); background: #fff5f6; }
+    .feedback.unanswered { border-color: #e1d5b2; border-left-color: var(--amber); background: #fffaf0; }
+    .feedback h3 { color: var(--accent); font-size: 16px; margin-bottom: 6px; }
+    .feedback.wrong h3 { color: var(--red); }
+    .feedback.unanswered h3 { color: var(--amber); }
+    .feedback-key { font-size: 12px; font-weight: 650; margin-bottom: 9px; }
+    .feedback-explanation { font-size: 14px; line-height: 1.8; }
+    .feedback-sources { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 13px; font-size: 11px; color: var(--muted); }
+    .source-chip { border: 1px solid #d2ded4; background: #ffffffb8; padding: 1px 7px; border-radius: 5px; }
+    .question-nav { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); margin-top: 26px; padding-top: 20px; }
+    .keyboard-hint { text-align: center; color: var(--muted); font-size: 11px; margin-top: 15px; }
+    .sidebar { position: sticky; top: 20px; padding: 22px; }
+    .sidebar h2 { font-size: 15px; margin-bottom: 16px; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+    progress { width: 100%; height: 7px; border: none; border-radius: 9px; overflow: hidden; background: #e7ede7; display: block; }
+    progress::-webkit-progress-bar { background: #e7ede7; }
+    progress::-webkit-progress-value { background: var(--accent); border-radius: 9px; }
+    progress::-moz-progress-bar { background: var(--accent); border-radius: 9px; }
+    .mini-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; padding: 18px 0; margin-bottom: 17px; border-bottom: 1px solid var(--line); }
+    .mini-stat strong { display: block; font-size: 20px; font-variant-numeric: tabular-nums; }
+    .mini-stat span { font-size: 10px; color: var(--muted); }
+    .text-green { color: var(--accent); }
+    .text-red { color: var(--red); }
+    .map-label { font-size: 12px; margin-bottom: 8px; font-weight: 650; }
+    .question-map { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; max-height: 303px; overflow-y: auto; padding: 4px; margin: 0 -4px; scrollbar-width: thin; }
+    .map-item { min-width: 0; min-height: 34px; border: 1px solid #d6dfd8; border-radius: 7px; background: #f9faf7; color: #52635e; font-size: 11px; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .map-item.correct { background: #e5f3e7; border-color: #a4cab0; color: #246440; }
+    .map-item.wrong { background: #fbecef; border-color: #e0b1bb; color: var(--red); }
+    .map-item.partial { background: var(--amber-bg); border-style: dashed; border-color: #c5aa60; color: var(--amber); }
+    .map-item.current { outline: 2px solid var(--ink); outline-offset: 1px; }
+    .map-legend { display: flex; flex-wrap: wrap; gap: 7px 12px; font-size: 10px; color: var(--muted); margin: 16px 0 20px; }
+    .legend-item { display: flex; align-items: center; gap: 5px; }
+    .legend-dot { width: 9px; height: 9px; border: 1px solid #cbd7cf; border-radius: 3px; background: #f6f8f3; }
+    .legend-dot.correct { background: #c7e5ce; border-color: #96c7a3; }
+    .legend-dot.wrong { background: #f2c7d0; border-color: #dca5b2; }
+    .complete-banner { margin-bottom: 22px; }
+    .result-top { display: grid; grid-template-columns: 190px 1fr; gap: 34px; padding: 34px; align-items: center; }
+    .score-ring { --score: 0%; width: 180px; height: 180px; border-radius: 50%; background: conic-gradient(var(--accent) var(--score), #e8efe9 0); display: grid; place-items: center; }
+    .score-ring-inner { width: 154px; height: 154px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+    .score-ring strong { font-size: 45px; letter-spacing: -.05em; line-height: 1.2; color: var(--accent); }
+    .score-ring span { font-size: 12px; color: var(--muted); }
+    .result-top h1 { font-size: 30px; margin: 9px 0; }
+    .result-top p { color: var(--muted); font-size: 14px; }
+    .result-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0; }
+    .result-stat { padding: 17px 20px; }
+    .result-stat strong { font-size: 25px; display: block; line-height: 1.4; font-variant-numeric: tabular-nums; }
+    .result-stat span { color: var(--muted); font-size: 12px; }
+    .result-actions { margin-top: 22px; }
+    .result-lower { display: grid; grid-template-columns: .85fr 1.15fr; gap: 24px; align-items: start; }
+    .result-panel { padding: 24px; }
+    .result-panel h2 { font-size: 17px; margin-bottom: 16px; }
+    .topic-row { margin-top: 17px; }
+    .topic-row-head { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; margin-bottom: 6px; }
+    .topic-row-head span { color: var(--muted); }
+    .topic-row-head strong { flex-shrink: 0; font-size: 12px; }
+    .review-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 17px; }
+    .filter-button { font-size: 12px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 7px; background: #fff; color: var(--muted); }
+    .filter-button[aria-pressed=true] { color: var(--accent); background: var(--accent-light); border-color: #b8d4c5; font-weight: 650; }
+    .review-list { display: grid; gap: 8px; max-height: 430px; overflow-y: auto; padding: 3px; margin: -3px; scrollbar-width: thin; }
+    .review-item { display: flex; align-items: center; gap: 13px; background: #fbfcf9; border: 1px solid var(--line); border-radius: 10px; padding: 12px; width: 100%; text-align: left; color: var(--ink); }
+    .review-item:hover { border-color: #8fb29f; background: #f0f6ef; }
+    .review-number { font-size: 12px; font-weight: 750; color: var(--accent); }
+    .review-copy { min-width: 0; flex: 1; }
+    .review-copy p { font-size: 12px; line-height: 1.6; }
+    .review-copy small { font-size: 10px; color: var(--muted); }
+    .review-status { min-width: 20px; font-size: 15px; text-align: right; }
+    .empty-state { padding: 24px 10px; color: var(--muted); font-size: 13px; text-align: center; }
+    .site-footer { border-top: 1px solid var(--line); padding-block: 20px 26px; color: var(--muted); font-size: 11px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+    @media (max-width: 1000px) {
+      .setup-grid { gap: 30px; }
+      .quiz-layout { grid-template-columns: minmax(0, 1fr) 245px; gap: 18px; }
+      .question-card { padding: 24px; }
+      .sidebar { padding: 18px; }
+      .hero-counts { gap: 25px; }
+      .question-title { font-size: 19px; }
+    }
+    @media (max-width: 760px) {
+      .wrap { padding-inline: 20px; }
+      main { padding-top: 25px; }
+      .header-inner { min-height: 74px; }
+      .setup-grid { grid-template-columns: 1fr; gap: 28px; }
+      .hero { padding-top: 6px; }
+      .hero-description { max-width: 100%; margin-top: 14px; }
+      .hero-counts { margin: 22px 0; padding: 18px 0; justify-content: space-between; }
+      .howto { gap: 12px; }
+      .setup-card { padding: 24px; }
+      .quiz-layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; }
+      .question-map { grid-template-columns: repeat(10, 1fr); max-height: 220px; }
+      .quiz-top { flex-wrap: wrap; gap: 15px; }
+      .quiz-top h1 { font-size: 21px; }
+      .top-metrics { flex: 1 1 100%; }
+      .metric { flex: 1; display: flex; justify-content: space-between; align-items: center; gap: 15px; padding: 10px 14px; }
+      .metric-label { font-size: 10px; }
+      .metric strong { font-size: 21px; }
+      .reference-content, .result-lower { grid-template-columns: 1fr; }
+      .result-top { grid-template-columns: 1fr; gap: 20px; padding: 26px; text-align: center; }
+      .score-ring { margin: auto; width: 150px; height: 150px; }
+      .score-ring-inner { width: 128px; height: 128px; }
+      .score-ring strong { font-size: 37px; }
+      .result-top h1 { font-size: 27px; }
+      .result-actions { justify-content: center; }
+      .result-stats { grid-template-columns: repeat(2, 1fr); }
+      .notice { align-items: flex-start; }
+      .keyboard-hint { display: none; }
+    }
+    @media (max-width: 430px) {
+      .wrap { padding-inline: 14px; }
+      .brand-subtitle { font-size: 10px; }
+      .offline-pill { font-size: 10px; gap: 5px; }
+      .brand { gap: 9px; }
+      .brand-mark { width: 37px; height: 37px; font-size: 17px; }
+      .brand-title { font-size: 15px; }
+      .question-card { padding: 20px 17px; }
+      .question-title { font-size: 18px; }
+      .option { padding: 13px 11px; gap: 10px; }
+      .option-letter { width: 26px; height: 26px; min-width: 26px; }
+      .feedback { padding: 16px; }
+      .question-map { grid-template-columns: repeat(7, 1fr); }
+      .button { padding-inline: 15px; font-size: 13px; }
+      .quiz-top h1 { font-size: 19px; }
+      .metric { gap: 6px; padding-inline: 11px; }
+      .metric strong { font-size: 19px; }
+      .question-heading-row { flex-wrap: wrap; }
+      .setup-card { padding: 21px; }
+      .result-panel { padding: 20px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; } }
+    @media print {
+      body { background: white; }
+      .site-header, .site-footer, .button, .sidebar, .keyboard-hint, .review-filters, #setupView { display: none !important; }
+      .wrap { max-width: none; padding: 0; }
+      main { padding: 0; }
+      .card { box-shadow: none; }
+      .quiz-layout, .result-lower { display: block; }
+      .review-list { max-height: none; overflow: visible; }
+      .result-panel { margin-top: 15px; }
+      .option, .feedback { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">AI</div>
+        <div><div class="brand-title">Góc ôn tập</div><div class="brand-subtitle">KHOA HỌC DỮ LIỆU & TRÍ TUỆ NHÂN TẠO</div></div>
+      </div>
+      <div class="offline-pill">Dùng ngoại tuyến</div>
+    </div>
+  </header>
+  <main class="wrap">
+    <noscript><div class="notice">Hãy bật JavaScript trong trình duyệt để làm bài, chấm điểm và sử dụng đồng hồ đếm ngược.</div></noscript>
+    <section id="setupView" aria-labelledby="setupHeading">
+      <div class="setup-grid">
+        <div class="hero">
+          <div class="eyebrow">Nhập môn KHDL & TTNT</div>
+          <h1 id="setupHeading">Học từng câu.<br><span>Hiểu từng đáp án.</span></h1>
+          <p class="hero-description">Một không gian ôn tập nhỏ, với đủ 180 câu từ bộ tài liệu Word của bạn. Chọn câu trả lời, hiểu lý do và theo dõi tiến bộ.</p>
+          <div class="hero-counts">
+            <div><strong>180</strong><span>câu trắc nghiệm</span></div>
+            <div><strong>7</strong><span>nhóm kiến thức</span></div>
+            <div><strong>6</strong><span>tài liệu nguồn</span></div>
+          </div>
+          <div class="howto">
+            <div class="howto-item"><span class="step">01</span><div><strong>Chọn là có phản hồi</strong><p>Giải thích hiện ngay khi chọn đủ số đáp án của câu hỏi.</p></div></div>
+            <div class="howto-item"><span class="step">02</span><div><strong>Điểm số rõ ràng</strong><p>Mỗi câu đúng có cùng trọng số, quy đổi về thang điểm 10.</p></div></div>
+            <div class="howto-item"><span class="step">03</span><div><strong>Ôn lại điều chưa chắc</strong><p>Xem lại câu sai, câu bỏ trống và bắt đầu một lượt luyện mới.</p></div></div>
+          </div>
+        </div>
+        <div class="card setup-card">
+          <h2>Thiết lập lượt ôn</h2>
+          <p class="muted small">Bắt đầu với bộ câu hỏi phù hợp với bạn.</p>
+          <form id="setupForm" class="setup-form">
+            <div class="field">
+              <label for="topicSelect">Chủ đề</label>
+              <select id="topicSelect" name="topic"><option value="all">Tất cả 7 chủ đề · 180 câu</option></select>
+            </div>
+            <div class="field-pair">
+              <div class="field">
+                <label for="questionCount">Số câu</label>
+                <input id="questionCount" name="count" type="number" min="1" max="180" value="180" step="1" inputmode="numeric" required aria-describedby="countHint">
+                <p id="countHint" class="field-hint">Từ 1 đến 180 câu.</p>
+              </div>
+              <div class="field">
+                <label for="durationMinutes">Thời gian (phút)</label>
+                <input id="durationMinutes" name="duration" type="number" min="1" max="180" value="60" step="1" inputmode="numeric" required aria-describedby="durationHint">
+                <p id="durationHint" class="field-hint">Từ 1 đến 180 phút.</p>
+              </div>
+            </div>
+            <div class="toggle-line">
+              <label for="shuffleQuestions">Xáo trộn thứ tự câu hỏi<small>Thứ tự A–D luôn khớp với file Word.</small></label>
+              <input id="shuffleQuestions" name="shuffle" type="checkbox">
+            </div>
+            <button class="button primary full" type="submit">Bắt đầu ôn tập <span aria-hidden="true">→</span></button>
+            <p id="startDescription" class="start-description">180 câu · 60 phút · Chấm và giải thích tức thì</p>
+          </form>
+          <div class="info-note"><strong>Cách chấm:</strong> câu chọn nhiều chỉ đúng khi chọn đủ tất cả đáp án đúng. Câu sai hoặc chưa hoàn thành được 0 điểm. Lựa chọn đã chấm sẽ được khóa.</div>
+        </div>
+      </div>
+      <details class="card reference-details">
+        <summary>Chủ đề, tài liệu nguồn và các điểm dễ nhầm</summary>
+        <div class="reference-content">
+          <div><h3>7 chủ đề ôn tập</h3><ul id="topicReferences"></ul><h3 style="margin-top:20px">Tài liệu tham chiếu</h3><ul id="sourceReferences"></ul></div>
+          <div><h3>Các điểm đã chuẩn hóa trong bộ đáp án</h3><ul id="correctionReferences"></ul></div>
+        </div>
+      </details>
+    </section>
+
+    <section id="quizView" hidden aria-labelledby="quizHeading">
+      <div class="quiz-top">
+        <div><div class="eyebrow" id="sessionEyebrow">Lượt ôn của bạn</div><h1 id="quizHeading">Tất cả chủ đề</h1></div>
+        <div class="top-metrics">
+          <div class="metric"><span class="metric-label">Điểm / 10</span><strong id="liveScore">0,00</strong></div>
+          <div class="metric timer-metric" id="timerMetric"><span class="metric-label" id="timerLabel">Còn lại</span><strong id="timerText" role="timer" aria-label="Thời gian còn lại">60:00</strong></div>
+        </div>
+      </div>
+      <div class="notice complete-banner" id="completeBanner" hidden><span id="completeText"></span><button class="button quiet" id="bannerResults" type="button">Xem tổng kết →</button></div>
+      <div class="quiz-layout">
+        <article class="card question-card">
+          <div class="question-heading-row">
+            <p class="question-counter"><strong id="questionPosition"></strong><span id="originalNumber"></span></p>
+            <span class="type-pill" id="typePill"></span>
+          </div>
+          <p class="question-topic" id="questionTopic"></p>
+          <h2 class="question-title" id="questionTitle" tabindex="-1"></h2>
+          <p class="selection-hint" id="selectionHint"></p>
+          <div class="options" id="options" role="group" aria-labelledby="questionTitle" aria-describedby="selectionHint"></div>
+          <section class="feedback" id="feedback" hidden tabindex="-1" aria-labelledby="feedbackTitle">
+            <h3 id="feedbackTitle"></h3>
+            <p class="feedback-key" id="feedbackKey"></p>
+            <p class="feedback-explanation" id="feedbackExplanation"></p>
+            <div class="feedback-sources" id="feedbackSources"></div>
+          </section>
+          <div class="question-nav">
+            <button type="button" class="button secondary" id="previousQuestion">← Câu trước</button>
+            <button type="button" class="button primary" id="nextQuestion">Câu tiếp →</button>
+          </div>
+          <p class="keyboard-hint">Phím 1–4 để chọn đáp án · ← → để chuyển câu</p>
+        </article>
+        <aside class="card sidebar" aria-label="Tiến độ và điều hướng câu hỏi">
+          <h2>Tiến độ của bạn</h2>
+          <div class="progress-label"><span>Đã trả lời</span><strong id="progressText">0 / 180</strong></div>
+          <progress id="quizProgress" max="180" value="0" aria-label="Số câu đã trả lời"></progress>
+          <div class="mini-stats">
+            <div class="mini-stat"><strong id="correctCount" class="text-green">0</strong><span>Đúng</span></div>
+            <div class="mini-stat"><strong id="wrongCount" class="text-red">0</strong><span>Sai</span></div>
+            <div class="mini-stat"><strong id="pendingCount">180</strong><span>Chưa xong</span></div>
+          </div>
+          <p class="map-label">Đi đến câu hỏi <span class="muted small">(số gốc)</span></p>
+          <nav id="questionMap" class="question-map" aria-label="Danh sách câu hỏi"></nav>
+          <div class="map-legend">
+            <span class="legend-item"><i class="legend-dot correct"></i>Đúng</span>
+            <span class="legend-item"><i class="legend-dot wrong"></i>Sai</span>
+            <span class="legend-item"><i class="legend-dot"></i>Chưa xong</span>
+          </div>
+          <button type="button" class="button secondary full" id="finishButton">Kết thúc & xem điểm</button>
+          <p class="small muted" style="font-size:11px;margin-top:10px">Hết giờ, lượt ôn sẽ tự kết thúc. Điểm = số câu đúng ÷ tổng số câu × 10.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="resultsView" hidden aria-labelledby="resultHeading">
+      <div class="card result-top">
+        <div class="score-ring" id="scoreRing" role="img" aria-label="Điểm tổng kết">
+          <div class="score-ring-inner"><strong id="finalScore">0,00</strong><span>trên 10 điểm</span></div>
+        </div>
+        <div>
+          <div class="eyebrow">Tổng kết lượt ôn</div>
+          <h1 id="resultHeading" tabindex="-1">Bạn đã hoàn thành lượt ôn.</h1>
+          <p id="resultDescription"></p>
+          <p id="resultFormula" style="margin-top:7px;font-size:12px"></p>
+          <div class="button-row result-actions">
+            <button type="button" class="button primary" id="retryMissed">Ôn lại câu chưa đúng</button>
+            <button type="button" class="button secondary" id="retryAll">Làm lại bộ này</button>
+            <button type="button" class="button quiet" id="changeSetup">Chọn bộ khác</button>
+          </div>
+        </div>
+      </div>
+      <div class="result-stats">
+        <div class="card result-stat"><strong id="resultCorrect" class="text-green">0</strong><span>Câu đúng</span></div>
+        <div class="card result-stat"><strong id="resultWrong" class="text-red">0</strong><span>Câu sai</span></div>
+        <div class="card result-stat"><strong id="resultUnanswered">0</strong><span>Chưa hoàn thành</span></div>
+        <div class="card result-stat"><strong id="resultTime">00:00</strong><span>Thời gian đã dùng</span></div>
+      </div>
+      <div class="result-lower">
+        <div class="card result-panel"><h2>Theo từng chủ đề</h2><p class="small muted">Số câu đúng / số câu trong lượt ôn.</p><div id="topicResults"></div></div>
+        <div class="card result-panel">
+          <h2>Xem lại câu trả lời</h2>
+          <div class="review-filters" role="group" aria-label="Lọc câu cần xem lại">
+            <button type="button" class="filter-button" data-review-filter="all" aria-pressed="true">Tất cả</button>
+            <button type="button" class="filter-button" data-review-filter="wrong" aria-pressed="false">Câu sai</button>
+            <button type="button" class="filter-button" data-review-filter="pending" aria-pressed="false">Chưa hoàn thành</button>
+          </div>
+          <div id="reviewList" class="review-list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="wrap footer-inner"><span>180 câu · Đồng bộ với bộ câu hỏi và đáp án Word</span><span id="saveStatus">Tiến độ tự lưu trên trình duyệt này.</span></div></footer>
+  <div id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script id="quiz-data" type="application/json">{"version":"khdl-180-6bf58cf27765f4ea","sections":[{"id":1,"title":"Tổng quan về AI, học máy và khoa học dữ liệu","count":25},{"id":2,"title":"Dữ liệu, tư duy phân tích và khung PACE","count":25},{"id":3,"title":"Phương pháp học máy, tiền xử lý và công cụ","count":30},{"id":4,"title":"Xây dựng, đánh giá và lựa chọn dự án AI","count":30},{"id":5,"title":"Ứng dụng và chuyển đổi AI trong doanh nghiệp","count":30},{"id":6,"title":"AI, xã hội và trách nhiệm khi ứng dụng","count":25},{"id":7,"title":"Thông tin học phần và phương pháp học","count":15}],"sources":{"TL1":"Ngân Hàng Câu Hỏi và Đáp Án — 148 câu, 36 trang.","TL2":"Building AI in Your Company — Andrew Ng / DeepLearning.AI, 44 trang.","TL3":"AI and Society — Andrew Ng / DeepLearning.AI, 27 trang.","TL4":"What is AI — Andrew Ng / DeepLearning.AI, 38 trang.","TL5":"Building AI Projects — Andrew Ng / DeepLearning.AI, 33 trang.","TL6":"Nhập Môn KHDL & TTNT — Nguyen Van Thieu / Phenikaa, 28 trang."},"notes":[{"title":"Quá khớp và quá tải","text":"Câu 069, 071, 092: overfitting là học quá sát dữ liệu huấn luyện nhưng khái quát kém. Quá nhiều dữ liệu làm hết RAM là vấn đề tài nguyên hoặc overload; không tự chứng minh overfitting."},{"title":"Điều chuẩn, dữ liệu bổ sung và kiểm định chéo","text":"Câu 072–075: điều chuẩn và bổ sung dữ liệu phù hợp có thể trực tiếp hỗ trợ giảm quá khớp. Cross-validation chủ yếu giúp đánh giá và chọn mô hình hoặc siêu tham số; bản thân nó không phải phép điều chuẩn."},{"title":"Nhiều phương pháp hoặc ứng dụng cùng hợp lý","text":"Câu 024, 056, 062, 063: phân đoạn ảnh có nhãn từng điểm ảnh có thể học có giám sát; học tăng cường có thể dùng trong game và robot; học sâu có nhiều miền ứng dụng; cả PCA và biểu diễn hạng thấp từ SVD đều có thể dùng để giảm chiều."},{"title":"Các cách viết không tạo thành hai khái niệm","text":"Câu 076: scikit-learn và sklearn không phải hai thư viện độc lập. Tương tự, các biến thể cách viết của neural network hoặc technology/tech không được dùng để tạo thêm một đáp án đúng."},{"title":"Khung PACE và tính lặp","text":"Câu 045–049: dùng Plan–Analyze–Construct–Execute. Khảo sát, làm sạch và phân tích khám phá thường gắn với Analyze; mô hình hóa tập trung ở Construct. Trong thực tế, xử lý dữ liệu và trực quan hóa có thể lặp lại ở nhiều giai đoạn. Câu hỏi được viết rõ ngữ cảnh, tránh nhầm do bản dịch mất từ phủ định."},{"title":"Câu hỏi nghiên cứu khác giả thuyết","text":"Câu 041–043: câu hỏi nghiên cứu nêu điều cần tìm hiểu; giả thuyết đưa ra một phát biểu có thể kiểm chứng. Hai khái niệm liên quan nhưng không đồng nghĩa."},{"title":"Cảm biến khác thuật toán AI","text":"Câu 116, 122: camera, radar và lidar là nguồn thu nhận dữ liệu. Cần phân biệt chúng với các mô hình dùng dữ liệu đó để nhận thức, dự đoán và lập kế hoạch."},{"title":"Không tuyệt đối hóa một kiến trúc","text":"Câu 059: CNN là kiến trúc quan trọng trong xử lý ảnh, nhưng không được coi là luôn tốt nhất cho mọi nhiệm vụ và mọi thời điểm."},{"title":"Giữ nguyên bối cảnh của dự báo","text":"Câu 161–164: các khoảng việc làm đến 2030 trong AI and Society là dự báo được trích trong nguồn. What is AI nêu 13–22 nghìn tỷ USD đến 2033, gồm khoảng 3–4 nghìn tỷ USD từ GenAI; slide học phần nêu 13 nghìn tỷ USD đến 2030. Không đổi mốc hoặc trình bày thành kết quả thực tế hiện tại."},{"title":"Thông tin học phần và biểu đồ kỹ năng","text":"Câu 166–180: các con số về tín chỉ, chuyên cần, Coursera và thi được hỏi theo slide học phần. 69% thuộc biểu đồ kỹ năng analytical thinking; 80% là mức trung bình Coursera được nêu để đủ điều kiện dự thi."}],"questions":[{"id":1,"section":1,"prompt":"Quan hệ bao hàm nào đúng giữa trí tuệ nhân tạo (AI), học máy (ML) và học sâu (DL)?","options":["ML là một phần của DL; DL là một phần của AI.","AI là một phần của ML; ML là một phần của DL.","DL là một phần của ML; ML là một phần của AI.","AI, ML và DL là ba lĩnh vực hoàn toàn tách biệt."],"correct":[2],"explanation":"Học sâu là một nhánh của học máy; học máy là một cách tiếp cận trong lĩnh vực AI.","sources":["TL1","TL4"]},{"id":2,"section":1,"prompt":"Đặc trưng cốt lõi của học máy là gì?","options":["Lưu toàn bộ dữ liệu mà không cần tìm quy luật.","Thay phần mềm bằng các thiết bị cơ khí.","Học các quy luật từ dữ liệu để thực hiện một nhiệm vụ.","Yêu cầu lập trình viên viết riêng mọi quy tắc xử lý."],"correct":[2],"explanation":"Thay vì viết tường minh mọi quy tắc, người xây dựng dùng dữ liệu để huấn luyện mô hình.","sources":["TL1","TL4"]},{"id":3,"section":1,"prompt":"Mục tiêu điển hình của khoa học dữ liệu (Data Science) là gì?","options":["Chỉ thiết kế phần cứng cho máy tính.","Chỉ tăng dung lượng lưu trữ của cơ sở dữ liệu.","Chỉ tạo ra nội dung hình ảnh mới.","Trích xuất kiến thức và hiểu biết hữu ích từ dữ liệu để hỗ trợ quyết định."],"correct":[3],"explanation":"Khoa học dữ liệu chú trọng biến dữ liệu thành hiểu biết, kết luận và đề xuất hành động.","sources":["TL1","TL4"]},{"id":4,"section":1,"prompt":"Cặp đầu ra nào thể hiện rõ sự khác nhau giữa một dự án ML và một dự án khoa học dữ liệu?","options":["ML: hệ thống dự đoán tự động; khoa học dữ liệu: phân tích và khuyến nghị kinh doanh.","ML: quy tắc viết tay; khoa học dữ liệu: chỉ thay thế linh kiện.","ML: dữ liệu chưa xử lý; khoa học dữ liệu: chỉ mã nguồn phần mềm.","ML: báo cáo phân tích; khoa học dữ liệu: chỉ lắp đặt máy chủ."],"correct":[0],"explanation":"Trong các ví dụ của tài liệu, ML thường tạo hệ thống dự đoán; khoa học dữ liệu thường tạo insights và đề xuất.","sources":["TL4","TL5"]},{"id":5,"section":1,"prompt":"Một hệ thống chơi cờ rất giỏi nhưng chỉ được thiết kế cho nhiệm vụ đó là ví dụ của loại AI nào?","options":["AI tổng quát (Artificial General Intelligence — AGI).","AI hẹp (Artificial Narrow Intelligence — ANI).","Một hệ thống đã có mọi năng lực nhận thức của con người.","Một cơ sở dữ liệu quan hệ."],"correct":[1],"explanation":"ANI giải quyết một nhiệm vụ hoặc phạm vi nhiệm vụ cụ thể; giỏi chơi cờ không đồng nghĩa có trí tuệ tổng quát.","sources":["TL4"]},{"id":6,"section":1,"prompt":"Khái niệm AGI đề cập đến điều gì?","options":["AI có năng lực trí tuệ tổng quát trên nhiều loại nhiệm vụ, tương tự phạm vi năng lực của con người.","Bất kỳ phần mềm nào có kết nối Internet.","Một mô hình chỉ phân loại thư rác.","Một hệ thống chỉ tạo được ảnh chân dung."],"correct":[0],"explanation":"Điểm phân biệt là tính tổng quát của năng lực, không phải mức độ giỏi ở một nhiệm vụ riêng lẻ.","sources":["TL4"]},{"id":7,"section":1,"prompt":"Đặc điểm nổi bật của AI tạo sinh (Generative AI) là gì?","options":["Tạo nội dung mới như văn bản, hình ảnh hoặc âm thanh từ các mẫu đã học.","Chỉ gắn nhãn có sẵn cho các tệp tin.","Chỉ sắp xếp bản ghi theo thứ tự thời gian.","Chỉ đếm số dòng trong bảng dữ liệu."],"correct":[0],"explanation":"GenAI tạo nội dung, khác với việc chỉ lưu trữ, thống kê hay phân loại nội dung có sẵn.","sources":["TL2","TL4"]},{"id":8,"section":1,"prompt":"Trong cách giải thích ở tài liệu What is AI, một nhiệm vụ huấn luyện nền tảng của mô hình ngôn ngữ lớn là gì?","options":["Chuyển mọi văn bản thành số dòng của tệp.","Chỉ tìm bản sao nguyên văn của toàn bộ câu hỏi.","Sắp xếp tất cả từ theo thứ tự bảng chữ cái.","Dự đoán từ hoặc token tiếp theo dựa trên ngữ cảnh trước đó."],"correct":[3],"explanation":"Tài liệu minh họa LLM bằng dự đoán từ tiếp theo; về kỹ thuật, đơn vị dự đoán thường là token.","sources":["TL4"]},{"id":9,"section":1,"prompt":"Ký hiệu A → B trong ví dụ học có giám sát biểu diễn điều gì?","options":["Học ánh xạ từ đầu vào A đến đầu ra mong muốn B bằng các ví dụ đã biết.","Chuyển mọi dữ liệu từ máy A sang máy B.","Tự nhóm dữ liệu mà không có đầu ra mẫu.","Chỉ tối đa hóa phần thưởng trong một môi trường."],"correct":[0],"explanation":"Dữ liệu học có giám sát gồm các cặp đầu vào và đầu ra hoặc nhãn tương ứng.","sources":["TL4"]},{"id":10,"section":1,"prompt":"Với nhiệm vụ nhận dạng tiếng nói (speech recognition), cặp đầu vào → đầu ra nào phù hợp?","options":["Âm thanh lời nói → văn bản.","Văn bản → vị trí GPS.","Ảnh đường phố → âm lượng loa.","Nhãn thư rác → nội dung email."],"correct":[0],"explanation":"Nhận dạng tiếng nói chuyển lời nói thành văn bản; hiểu ý định là một bước khác.","sources":["TL2","TL4"]},{"id":11,"section":1,"prompt":"Trong hệ thống phân loại thư rác có giám sát, đầu ra B thường là gì?","options":["Dung lượng ổ đĩa của máy chủ.","Nhãn thư rác hoặc không phải thư rác.","Một ảnh mới được sinh ngẫu nhiên.","Toàn bộ danh sách người dùng Internet."],"correct":[1],"explanation":"Email là đầu vào; nhãn spam hoặc không spam là đầu ra cần học dự đoán.","sources":["TL4"]},{"id":12,"section":1,"prompt":"Ví dụ nào minh họa dịch máy theo mô hình A → B?","options":["Văn bản tiếng Anh → văn bản tiếng Trung tương ứng.","Âm thanh → mức sử dụng bộ nhớ.","Văn bản tiếng Anh → số lượng tệp trên máy.","Ảnh sản phẩm → nhãn lỗi bề mặt."],"correct":[0],"explanation":"Dịch máy học ánh xạ giữa nội dung ở ngôn ngữ nguồn và ngôn ngữ đích.","sources":["TL4"]},{"id":13,"section":1,"prompt":"Với bài toán kiểm tra chất lượng bằng ảnh, cặp A → B nào phù hợp nhất?","options":["Mã nhân viên → văn bản dịch tự động.","Lịch nghỉ lễ → bản đồ giao thông.","Ảnh sản phẩm → nhãn có lỗi hoặc không có lỗi.","Nhãn lỗi → giá thuê máy chủ."],"correct":[2],"explanation":"Đây là ví dụ dùng dữ liệu ảnh và nhãn kiểm định để học phát hiện sản phẩm lỗi.","sources":["TL4","TL5"]},{"id":14,"section":1,"prompt":"Nhận định nào đúng về mạng nơ-ron nhân tạo?","options":["Mọi mạng nơ-ron đều có ý thức như con người.","Mạng nơ-ron không cần dữ liệu hay quá trình huấn luyện.","Mỗi nơ-ron nhân tạo luôn tương ứng với đúng một tế bào não.","Có cảm hứng từ não bộ, nhưng không phải bản sao vận hành giống hệt não sinh học."],"correct":[3],"explanation":"Sự tương đồng với não chủ yếu là nguồn cảm hứng; không nên suy ra các đặc tính sinh học hoặc ý thức.","sources":["TL4"]},{"id":15,"section":1,"prompt":"Tình huống nào thường thuận lợi hơn cho một dự án học có giám sát?","options":["Không có dữ liệu liên quan nhưng yêu cầu độ chính xác tuyệt đối.","Dữ liệu huấn luyện không liên quan đến tình huống sử dụng.","Nhiệm vụ xác định rõ và có nhiều ví dụ phù hợp với đầu vào, đầu ra mong muốn.","Mục tiêu thay đổi liên tục và không xác định được đầu ra."],"correct":[2],"explanation":"Tính rõ ràng của nhiệm vụ và dữ liệu phù hợp giúp tăng khả năng xây dựng mô hình hiệu quả.","sources":["TL4","TL5"]},{"id":16,"section":1,"prompt":"Mô hình học từ ảnh chụp ban ngày nhưng hoạt động kém với ảnh ban đêm. Nguyên nhân nào cần kiểm tra trước?","options":["Mọi ảnh ban đêm đều không thể dùng cho AI.","Mô hình chắc chắn không thuộc lĩnh vực học máy.","Sự khác biệt giữa dữ liệu huấn luyện và dữ liệu triển khai.","Tên tệp mô hình chưa viết hoa."],"correct":[2],"explanation":"Sự thay đổi phân phối dữ liệu có thể làm hiệu năng thực tế giảm, dù kết quả trên dữ liệu cũ tốt.","sources":["TL4","TL5"]},{"id":17,"section":1,"prompt":"Một nhóm có rất ít ví dụ gán nhãn cho một nhiệm vụ khó. Kết luận nào hợp lý nhất?","options":["Đổi tên tập dữ liệu sẽ giải quyết được thiếu dữ liệu.","Cần đánh giá tính khả thi và bổ sung hoặc tận dụng dữ liệu phù hợp trước khi cam kết hiệu năng cao.","Số lượng và chất lượng ví dụ không liên quan đến hiệu năng.","Chỉ cần chọn mô hình lớn nhất là chắc chắn đạt 100%."],"correct":[1],"explanation":"Thiếu dữ liệu là một giới hạn thực tế; tài liệu không bảo đảm mọi bài toán đều giải quyết được ngay.","sources":["TL4","TL5"]},{"id":18,"section":1,"prompt":"Nhiệm vụ nào thuộc thị giác máy tính (computer vision)?","options":["Phát hiện người đi bộ trong ảnh từ camera.","Dịch một đoạn văn sang ngôn ngữ khác.","Chuyển lời nói thành văn bản.","Lập lịch sao lưu cơ sở dữ liệu."],"correct":[0],"explanation":"Thị giác máy tính xử lý và diễn giải thông tin từ ảnh hoặc video.","sources":["TL2","TL1"]},{"id":19,"section":1,"prompt":"Những nhiệm vụ nào thuộc xử lý ngôn ngữ tự nhiên (NLP)?","options":["Dịch văn bản giữa hai ngôn ngữ.","Phân loại ý định trong một yêu cầu bằng văn bản.","Điều khiển điện áp cấp cho một động cơ theo mạch cố định.","Đo khoảng cách vật thể bằng lidar."],"correct":[0,1],"explanation":"NLP xử lý ngôn ngữ; hiểu ý định và dịch văn bản là hai ứng dụng tiêu biểu.","sources":["TL2","TL4"]},{"id":20,"section":1,"prompt":"Một hệ thống đã chép đúng câu nói thành văn bản nhưng thực hiện sai yêu cầu. Thành phần nào nên được kiểm tra tiếp?","options":["Thành phần nhận dạng ý định của câu lệnh.","Bộ cảm biến độ sáng không tham gia xử lý câu lệnh.","Bộ sắp xếp tên tệp theo bảng chữ cái.","Dung lượng của ảnh nền màn hình."],"correct":[0],"explanation":"Chép lời nói và hiểu ý định là hai nhiệm vụ khác nhau trong chuỗi xử lý trợ lý giọng nói.","sources":["TL2"]},{"id":21,"section":1,"prompt":"Đặc điểm nào giúp phân biệt một hệ robot có tương tác với thế giới vật lý với một chatbot chỉ xử lý văn bản?","options":["Robot không bao giờ cần phần mềm.","Robot chỉ có thể nhận đầu vào dạng văn bản.","Robot luôn phải có hình dáng giống con người.","Robot có thể kết hợp cảm nhận môi trường, lập kế hoạch và tác động bằng cơ cấu chấp hành."],"correct":[3],"explanation":"Robot thường tích hợp cảm biến và điều khiển hành động; hình dáng giống người không phải điều kiện bắt buộc.","sources":["TL2"]},{"id":22,"section":1,"prompt":"Ứng dụng nào thể hiện rõ nhất chức năng tạo sinh?","options":["Xếp khách hàng vào các nhóm từ dữ liệu mua sắm.","Tính tổng doanh thu từ các hóa đơn đã có.","Đánh dấu email đã nhận là thư rác.","Tạo một hình ảnh mới từ mô tả bằng văn bản."],"correct":[3],"explanation":"Đầu ra là nội dung mới, nên đây là ví dụ điển hình của AI tạo sinh.","sources":["TL2","TL4"]},{"id":23,"section":1,"prompt":"Một chatbot tạo văn bản trôi chảy. Có thể kết luận ngay điều gì?","options":["Hệ thống chắc chắn có ý thức sinh học.","Hệ thống thể hiện năng lực tạo ngôn ngữ; chưa đủ căn cứ để khẳng định đó là AGI.","Hệ thống chắc chắn có mọi năng lực trí tuệ của con người.","Hệ thống chắc chắn làm đúng mọi nhiệm vụ ngoài ngôn ngữ."],"correct":[1],"explanation":"Năng lực tạo nội dung và năng lực trí tuệ tổng quát là hai khái niệm khác nhau.","sources":["TL4"]},{"id":24,"section":1,"prompt":"Một mô hình phân đoạn ảnh được huấn luyện bằng ảnh kèm nhãn lớp cho từng điểm ảnh. Đây là ví dụ của cách học nào?","options":["Học có giám sát.","Học không giám sát từ dữ liệu không có nhãn mục tiêu.","Chỉ áp dụng quy tắc viết tay, không có quá trình học.","Học tăng cường chỉ từ tín hiệu phần thưởng."],"correct":[0],"explanation":"Nhãn lớp cho từng điểm ảnh cung cấp tín hiệu giám sát. Phân đoạn ảnh có thể là bài toán có giám sát.","sources":["TL1","TL4"]},{"id":25,"section":1,"prompt":"Một doanh nghiệp muốn vừa hiểu nguyên nhân doanh số giảm, vừa tự động dự đoán doanh số tuần tới. Cách phân công nào phù hợp?","options":["Dùng phân tích khoa học dữ liệu cho câu hỏi nguyên nhân và xây mô hình ML cho dự đoán.","Chỉ dùng khoa học dữ liệu vì ML không tạo được dự đoán.","Chỉ thay đổi cấu hình mạng nội bộ là đủ cho cả hai mục tiêu.","Chỉ dùng ML vì phân tích dữ liệu không hỗ trợ quyết định."],"correct":[0],"explanation":"Hai cách tiếp cận có thể bổ trợ nhau: phân tích tạo hiểu biết, còn mô hình hỗ trợ dự đoán tự động.","sources":["TL4","TL5"]},{"id":26,"section":2,"prompt":"Ví dụ nào là dữ liệu có cấu trúc?","options":["Bảng đơn hàng có các cột mã đơn, ngày mua và số tiền.","Bộ ảnh chụp sản phẩm chưa được mô tả bằng bảng.","Các video quay dây chuyền sản xuất.","Tập bản ghi âm các cuộc gọi."],"correct":[0],"explanation":"Dữ liệu có cấu trúc được tổ chức theo trường hoặc cột với lược đồ xác định.","sources":["TL2","TL4"]},{"id":27,"section":2,"prompt":"Ví dụ nào là dữ liệu phi cấu trúc ở dạng gốc?","options":["Bảng số lượng hàng bán theo ngày.","Bảng tuổi của khách hàng gồm hai cột mã và tuổi.","Một tệp âm thanh ghi lại cuộc hội thoại.","Bảng giá có cột mã sản phẩm và giá niêm yết."],"correct":[2],"explanation":"Âm thanh thô không có cấu trúc hàng–cột như một bảng dữ liệu thông thường.","sources":["TL2","TL4"]},{"id":28,"section":2,"prompt":"Những nhận định nào đúng về các dạng dữ liệu?","options":["Ảnh và âm thanh thường được xem là dữ liệu phi cấu trúc ở dạng gốc.","Bảng với các cột được định nghĩa rõ là ví dụ của dữ liệu có cấu trúc.","Mọi dữ liệu dạng số đều không thể lưu trong bảng.","Dữ liệu phi cấu trúc không thể được dùng để huấn luyện ML."],"correct":[0,1],"explanation":"ML có thể sử dụng cả dữ liệu có cấu trúc và phi cấu trúc, với cách biểu diễn và xử lý phù hợp.","sources":["TL2","TL4"]},{"id":29,"section":2,"prompt":"Nhân viên xem từng ảnh sản phẩm rồi ghi nhãn “lỗi” hoặc “không lỗi”. Đây là cách thu thập dữ liệu nào?","options":["Sinh dữ liệu bằng GAN.","Gán nhãn thủ công.","Học tăng cường bằng phần thưởng.","Giảm chiều bằng PCA."],"correct":[1],"explanation":"Con người cung cấp đầu ra mục tiêu cho từng ví dụ để tạo dữ liệu có nhãn.","sources":["TL4"]},{"id":30,"section":2,"prompt":"Ghi nhận sản phẩm mà người dùng nhấp xem trên website là ví dụ của cách thu thập dữ liệu nào?","options":["Loại bỏ mọi dữ liệu tương tác.","Quan sát hành vi người dùng.","Gán nhãn thủ công toàn bộ hình ảnh.","Chỉ thu thập cấu hình phần cứng máy chủ."],"correct":[1],"explanation":"Hành vi tương tác là một nguồn dữ liệu có thể hỗ trợ phân tích và xây dựng sản phẩm.","sources":["TL4"]},{"id":31,"section":2,"prompt":"Khi bổ sung dữ liệu từ website hoặc đối tác, nhóm dự án nên kiểm tra những yếu tố nào?","options":["Chỉ độ dài tên tệp, không cần xem nội dung.","Quyền sử dụng dữ liệu và yêu cầu bảo vệ thông tin cá nhân.","Mức độ liên quan và chất lượng dữ liệu đối với nhiệm vụ.","Chỉ tổng dung lượng, bất kể nguồn và mục đích sử dụng."],"correct":[1,2],"explanation":"Nguồn dữ liệu cần phù hợp về nội dung lẫn điều kiện sử dụng; nhiều dữ liệu không tự động tạo ra giá trị.","sources":["TL1","TL4"]},{"id":32,"section":2,"prompt":"Thông điệp “garbage in, garbage out” nhấn mạnh điều gì?","options":["Dữ liệu không ảnh hưởng đến kết quả của ML.","Dữ liệu đầu vào kém chất lượng có thể dẫn đến kết quả phân tích hoặc dự đoán kém.","Mô hình lớn luôn sửa được mọi lỗi dữ liệu.","Chỉ cần xóa dữ liệu kiểm tra là hiệu năng sẽ tăng."],"correct":[1],"explanation":"Chất lượng dữ liệu là nền tảng; thuật toán không bảo đảm khắc phục được nhãn sai, thiếu dữ liệu hay thiên lệch.","sources":["TL4","TL1"]},{"id":33,"section":2,"prompt":"Một cột dữ liệu bị thiếu nhiều giá trị. Bước xử lý nào hợp lý nhất trước khi huấn luyện?","options":["Bỏ qua việc kiểm tra vì mô hình luôn tự hiểu giá trị thiếu.","Thay mọi giá trị thiếu bằng 0 bất kể ngữ nghĩa.","Đổi tên cột nhưng giữ nguyên vấn đề.","Tìm hiểu kiểu thiếu và chọn cách xử lý phù hợp với ý nghĩa của cột."],"correct":[3],"explanation":"Có thể điền, loại bỏ hoặc xử lý riêng giá trị thiếu tùy bối cảnh; không có một cách áp dụng đúng cho mọi cột.","sources":["TL1","TL4"]},{"id":34,"section":2,"prompt":"Một số ảnh sản phẩm lỗi lại bị gán nhãn “không lỗi”. Rủi ro trực tiếp là gì?","options":["Số lượng điểm ảnh trong mọi ảnh tự động tăng.","Tập dữ liệu tự chuyển thành học tăng cường.","Mô hình học từ tín hiệu giám sát sai và kết quả đánh giá cũng có thể bị sai lệch.","Bộ nhớ máy tính luôn giảm một nửa."],"correct":[2],"explanation":"Nhãn sai ảnh hưởng cả việc học quy luật và việc đo chất lượng nếu xuất hiện trong tập đánh giá.","sources":["TL4","TL5"]},{"id":35,"section":2,"prompt":"Hai chuyên gia gán nhãn khác nhau cho cùng một ảnh khó. Nhóm nên làm gì trước tiên?","options":["Mặc định cả hai nhãn đều chính xác tuyệt đối trong mọi cách đánh giá.","Xóa toàn bộ dữ liệu dễ để chỉ giữ dữ liệu gây tranh cãi.","Tăng kích thước mô hình mà không xem lại nhãn.","Làm rõ tiêu chí gán nhãn và thống nhất cách xử lý các trường hợp mơ hồ."],"correct":[3],"explanation":"Sự mơ hồ của nhãn có thể giới hạn hiệu năng đo được; cần làm rõ chuẩn đánh giá.","sources":["TL5"]},{"id":36,"section":2,"prompt":"Doanh nghiệp có nhiều dữ liệu không liên quan đến bài toán đang làm. Nhận định nào đúng?","options":["Chỉ cần ghép thêm các tệp bất kỳ để bảo đảm mô hình tốt hơn.","Dữ liệu không cần liên hệ với đầu vào hoặc đầu ra mục tiêu.","Cứ có nhiều dữ liệu là giải quyết được mọi bài toán.","Khối lượng lớn không bù được việc dữ liệu không phù hợp với nhiệm vụ."],"correct":[3],"explanation":"Giá trị dữ liệu phụ thuộc vào mức độ phù hợp, chất lượng và khả năng hỗ trợ mục tiêu dự án.","sources":["TL4"]},{"id":37,"section":2,"prompt":"Mô hình sẽ phục vụ khách hàng ở nhiều khu vực. Tập dữ liệu huấn luyện nên ưu tiên điều gì?","options":["Chỉ dữ liệu của khu vực thuận tiện thu thập nhất.","Đại diện hợp lý cho các nhóm và điều kiện sử dụng dự kiến.","Chỉ các ví dụ dễ nhất để đạt điểm huấn luyện cao.","Chỉ các bản ghi lặp lại từ một khách hàng."],"correct":[1],"explanation":"Tính đại diện hỗ trợ khả năng khái quát hóa và giúp hạn chế một số nguồn thiên lệch.","sources":["TL3","TL4"]},{"id":38,"section":2,"prompt":"Cặp nào phân biệt đúng dữ liệu định lượng và dữ liệu định tính?","options":["Cả hai đều không thể được phân tích.","Doanh thu bằng đồng: định lượng; ý kiến mô tả của khách hàng: định tính.","Cả hai đều chỉ là dữ liệu hình ảnh.","Doanh thu bằng đồng: định tính; ý kiến mô tả: định lượng."],"correct":[1],"explanation":"Dữ liệu định lượng mô tả lượng đo đếm; dữ liệu định tính thể hiện đặc điểm, nội dung hoặc ý kiến.","sources":["TL1"]},{"id":39,"section":2,"prompt":"Một bảng có cột “khu vực” và “số lần mua”. Cách phân loại nào phù hợp?","options":["Khu vực là biến phân loại; số lần mua là biến số.","Cả hai đều bắt buộc là ảnh.","Khu vực luôn là biến liên tục; số lần mua là văn bản tự do.","Cả hai đều chỉ là nhãn đầu ra của mọi mô hình."],"correct":[0],"explanation":"Loại biến phụ thuộc ý nghĩa của giá trị; số lần mua là đại lượng đếm, còn khu vực biểu diễn nhóm.","sources":["TL1"]},{"id":40,"section":2,"prompt":"Trong dữ liệu huấn luyện dự đoán thư rác, “nhãn” có vai trò nào?","options":["Luôn là mã định danh ngẫu nhiên không liên quan đến nhiệm vụ.","Chỉ là tên thư mục chứa email.","Chỉ cho biết loại màn hình của người gán nhãn.","Cho biết kết quả mục tiêu mà mô hình cần học dự đoán cho từng email."],"correct":[3],"explanation":"Nhãn là đầu ra mẫu của học có giám sát, không đơn thuần là mã định danh bản ghi.","sources":["TL1","TL4"]},{"id":41,"section":2,"prompt":"Cách phân biệt nào đúng giữa câu hỏi nghiên cứu và giả thuyết?","options":["Hai khái niệm luôn đồng nghĩa hoàn toàn.","Giả thuyết luôn là kết luận đã được chứng minh.","Câu hỏi nêu điều cần tìm hiểu; giả thuyết là một phát biểu có thể được kiểm chứng bằng dữ liệu.","Câu hỏi nghiên cứu không được liên quan đến dữ liệu."],"correct":[2],"explanation":"Câu hỏi định hướng nghiên cứu; giả thuyết đưa ra một nhận định dự kiến để kiểm tra.","sources":["TL1"]},{"id":42,"section":2,"prompt":"Phát biểu nào là một câu hỏi nghiên cứu rõ ràng?","options":["Những yếu tố nào liên quan đến việc khách hàng ngừng sử dụng dịch vụ?","Doanh thu luôn tăng và không cần kiểm tra.","Tỷ lệ rời bỏ chắc chắn giảm vì mọi khách hàng đều hài lòng.","Mọi dữ liệu đều tốt."],"correct":[0],"explanation":"Câu hỏi tốt xác định vấn đề cần khám phá, thay vì khẳng định trước một kết luận chưa được kiểm chứng.","sources":["TL1","TL5"]},{"id":43,"section":2,"prompt":"Phát biểu nào phù hợp nhất với một giả thuyết có thể kiểm chứng?","options":["Dữ liệu là một điều rất thú vị.","Chúng ta nên tìm hiểu điều gì đó về khách hàng.","Khách hàng có thời gian chờ hỗ trợ dài hơn có tỷ lệ rời bỏ cao hơn.","Mọi quyết định kinh doanh đều đúng."],"correct":[2],"explanation":"Có thể dùng dữ liệu thời gian chờ và tỷ lệ rời bỏ để kiểm tra mối liên hệ được nêu.","sources":["TL1","TL5"]},{"id":44,"section":2,"prompt":"Doanh số và ngân sách quảng cáo cùng tăng. Có thể kết luận ngay rằng quảng cáo gây ra toàn bộ mức tăng doanh số không?","options":["Không; dữ liệu không bao giờ hỗ trợ nghiên cứu nguyên nhân.","Chưa; cần xem xét các yếu tố khác và thiết kế phân tích phù hợp.","Có; không cần biết thời gian hay bối cảnh của dữ liệu.","Có; hai đại lượng cùng tăng luôn chứng minh quan hệ nhân quả."],"correct":[1],"explanation":"Mối liên hệ quan sát được không tự chứng minh quan hệ nhân quả; có thể tồn tại yếu tố gây nhiễu.","sources":["TL1"]},{"id":45,"section":2,"prompt":"Trong khung PACE dùng để tổ chức công việc dữ liệu, thứ tự các giai đoạn là gì?","options":["Plan → Analyze → Construct → Execute.","Prepare → Advertise → Compute → Exit.","Predict → Automate → Copy → Erase.","Produce → Archive → Collect → Evaluate."],"correct":[0],"explanation":"PACE là Plan, Analyze, Construct, Execute: lập kế hoạch, phân tích, xây dựng và thực thi.","sources":["TL1"]},{"id":46,"section":2,"prompt":"Hoạt động nào phù hợp nhất với giai đoạn Plan của PACE?","options":["Chỉ bàn giao kết quả cuối cùng.","Chỉ triển khai mô hình lên hệ thống sản xuất.","Làm rõ mục tiêu, bên liên quan, phạm vi và câu hỏi cần giải quyết.","Chọn mô hình trước khi biết vấn đề kinh doanh."],"correct":[2],"explanation":"Plan giúp xác định đúng vấn đề và định hướng công việc trước khi tiến sâu vào phân tích hoặc mô hình hóa.","sources":["TL1"]},{"id":47,"section":2,"prompt":"Khảo sát chất lượng dữ liệu, làm sạch và phân tích khám phá thường gắn trực tiếp nhất với giai đoạn nào của PACE?","options":["Execute.","Construct.","Plan.","Analyze."],"correct":[3],"explanation":"Các hoạt động này thường thuộc Analyze. Trong dự án thực tế, nhóm có thể quay lại xử lý dữ liệu ở nhiều giai đoạn.","sources":["TL1"]},{"id":48,"section":2,"prompt":"Xây dựng, huấn luyện và điều chỉnh mô hình thường là trọng tâm của giai đoạn nào trong PACE?","options":["Analyze.","Execute.","Plan.","Construct."],"correct":[3],"explanation":"Construct tập trung xây dựng giải pháp hoặc mô hình dựa trên kết quả lập kế hoạch và phân tích.","sources":["TL1"]},{"id":49,"section":2,"prompt":"Trình bày kết quả, đưa ra khuyến nghị và hỗ trợ áp dụng giải pháp thường gắn với giai đoạn nào trong PACE?","options":["Construct.","Analyze.","Plan.","Execute."],"correct":[3],"explanation":"Execute đưa kết quả đến các bên liên quan và hỗ trợ chuyển kết quả thành hành động.","sources":["TL1"]},{"id":50,"section":2,"prompt":"Khi trình bày kết quả phân tích cho người quản lý không chuyên kỹ thuật, nên làm gì?","options":["Liên hệ phát hiện với câu hỏi kinh doanh và hành động cụ thể.","Chỉ đưa toàn bộ mã nguồn và bỏ phần kết luận.","Giải thích giới hạn quan trọng bằng ngôn ngữ dễ hiểu.","Giấu các giả định để bài trình bày có vẻ chắc chắn hơn."],"correct":[0,2],"explanation":"Giao tiếp hiệu quả giúp người nghe hiểu ý nghĩa, độ tin cậy và cách sử dụng kết quả.","sources":["TL1","TL5"]},{"id":51,"section":3,"prompt":"Đặc điểm nào phân biệt trực tiếp học có giám sát với học không giám sát?","options":["Học có giám sát sử dụng đầu ra hoặc nhãn mục tiêu cho các ví dụ huấn luyện.","Học có giám sát không sử dụng dữ liệu.","Học không giám sát luôn cần nhiều nhãn hơn.","Học không giám sát chỉ hoạt động với âm thanh."],"correct":[0],"explanation":"Học có giám sát học từ các cặp đầu vào–đầu ra; học không giám sát tìm cấu trúc khi không có nhãn mục tiêu như vậy.","sources":["TL1","TL2","TL4"]},{"id":52,"section":3,"prompt":"Nhóm khách hàng theo hành vi mua sắm khi chưa có nhãn nhóm sẵn là ví dụ của phương pháp nào?","options":["Phân cụm (clustering).","Phân loại có giám sát bằng nhãn nhóm đã biết.","Học tăng cường bằng phần thưởng từ trò chơi.","Nhận dạng tiếng nói."],"correct":[0],"explanation":"Phân cụm tìm các nhóm có đặc điểm tương tự từ dữ liệu không có nhãn nhóm mục tiêu.","sources":["TL1","TL2"]},{"id":53,"section":3,"prompt":"Dự đoán một giá trị giá nhà bằng số từ diện tích và vị trí là dạng bài toán nào?","options":["Hồi quy.","Phân loại nhị phân.","Dịch máy.","Phân cụm bắt buộc không dùng nhãn."],"correct":[0],"explanation":"Hồi quy dự đoán đại lượng số; ở đây đầu ra là giá nhà.","sources":["TL1"]},{"id":54,"section":3,"prompt":"Dự đoán một giao dịch là “gian lận” hay “hợp lệ” từ dữ liệu đã gán nhãn là dạng bài toán nào?","options":["Phân cụm không nhãn.","Hồi quy một đại lượng liên tục.","Phân loại có giám sát.","Sinh ảnh bằng GAN."],"correct":[2],"explanation":"Đầu ra thuộc các lớp xác định và đã có nhãn mẫu, nên đây là phân loại có giám sát.","sources":["TL1"]},{"id":55,"section":3,"prompt":"Mục tiêu điển hình của học tăng cường (reinforcement learning) là gì?","options":["Chỉ sắp xếp các tệp theo tên.","Chỉ nén dữ liệu ảnh để tiết kiệm bộ nhớ.","Học cách hành động để tối đa hóa phần thưởng tích lũy khi tương tác với môi trường.","Gán cùng một nhãn cho mọi bản ghi."],"correct":[2],"explanation":"Tác nhân nhận phản hồi dưới dạng phần thưởng và học chính sách hành động qua tương tác.","sources":["TL1","TL2"]},{"id":56,"section":3,"prompt":"Những tình huống nào phù hợp với cách đặt bài toán học tăng cường?","options":["Chỉ lập bảng thống kê số khách hàng theo tháng.","Chỉ dịch tên các cột dữ liệu bằng một bảng tra cố định.","Tác nhân chơi game học từ điểm thưởng sau các hành động.","Robot học cách di chuyển thông qua phản hồi thưởng hoặc phạt."],"correct":[2,3],"explanation":"Cả game và điều khiển robot đều có thể được đặt thành bài toán hành động tuần tự và tối ưu phần thưởng.","sources":["TL1","TL2"]},{"id":57,"section":3,"prompt":"Transfer learning (học chuyển giao) là gì?","options":["Tận dụng kiến thức hoặc mô hình đã học từ nhiệm vụ hay miền dữ liệu trước cho nhiệm vụ liên quan.","Sao chép tệp huấn luyện sang ổ đĩa khác mà không dùng lại mô hình.","Chia ngẫu nhiên khách hàng thành nhóm không có tiêu chí.","Xóa toàn bộ trọng số đã học trước mỗi lần dự đoán."],"correct":[0],"explanation":"Học chuyển giao khai thác kết quả học trước để hỗ trợ bài toán mới, thay vì luôn học lại từ đầu.","sources":["TL2","TL1"]},{"id":58,"section":3,"prompt":"Nhóm có ít ảnh gán nhãn cho một loại sản phẩm mới. Cách nào tận dụng trực tiếp học chuyển giao?","options":["Loại bỏ toàn bộ mô hình có sẵn rồi cam kết đạt 100%.","Bắt đầu từ mô hình thị giác đã huấn luyện trước rồi điều chỉnh bằng dữ liệu phù hợp.","Chỉ đổi tên các ảnh sang tiếng Anh.","Dùng dữ liệu kiểm tra làm nhãn cho mọi ảnh huấn luyện."],"correct":[1],"explanation":"Mô hình có sẵn có thể cung cấp đặc trưng hữu ích; vẫn cần dữ liệu phù hợp và đánh giá trên nhiệm vụ mới.","sources":["TL2","TL1"]},{"id":59,"section":3,"prompt":"Nhận định nào phù hợp về mạng nơ-ron tích chập (CNN)?","options":["CNN không thuộc nhóm mạng nơ-ron.","CNN chỉ dùng được cho dữ liệu không gian dạng văn bản thuần túy.","CNN luôn là phương pháp tốt nhất cho mọi bài toán AI ở mọi thời điểm.","CNN là một kiến trúc quan trọng cho xử lý ảnh; lựa chọn tốt nhất còn phụ thuộc bài toán và bối cảnh."],"correct":[3],"explanation":"Không nên biến một ví dụ kiến trúc mạnh thành khẳng định tuyệt đối về mọi nhiệm vụ hoặc mọi thời điểm.","sources":["TL1"]},{"id":60,"section":3,"prompt":"Trong các kỹ thuật được giới thiệu, GAN thường gắn với ứng dụng nào?","options":["Sinh dữ liệu mới, chẳng hạn hình ảnh.","Chỉ tính tổng một cột doanh thu.","Chỉ quản lý quyền truy cập thư mục.","Chỉ xác định dung lượng RAM của máy."],"correct":[0],"explanation":"GAN là một hướng mô hình tạo sinh, được minh họa trong tài liệu bằng khả năng sinh hình ảnh.","sources":["TL2"]},{"id":61,"section":3,"prompt":"Knowledge graph (đồ thị tri thức) biểu diễn tri thức chủ yếu bằng cách nào?","options":["Chỉ xóa các cột bị thiếu.","Chỉ lưu âm thanh dưới dạng sóng.","Chỉ nhân bản mọi bản ghi trong bảng.","Biểu diễn các thực thể và mối quan hệ giữa chúng."],"correct":[3],"explanation":"Các nút thường biểu diễn thực thể hoặc khái niệm; cạnh biểu diễn quan hệ giữa chúng.","sources":["TL2"]},{"id":62,"section":3,"prompt":"Những ứng dụng nào có thể dùng học sâu để học các mẫu phức tạp từ dữ liệu phù hợp?","options":["Tính tổng hai số bằng công thức cố định, không huấn luyện mô hình.","Nhận dạng đối tượng trong ảnh.","Dự báo thời tiết từ dữ liệu quan trắc.","Nhận dạng tiếng nói từ âm thanh."],"correct":[1,2,3],"explanation":"Học sâu có thể được dùng trong cả ba miền. Tính phù hợp và hiệu quả phải được kiểm tra theo bài toán cụ thể.","sources":["TL1","TL4"]},{"id":63,"section":3,"prompt":"Những kỹ thuật nào có thể được dùng trong giảm chiều tuyến tính?","options":["SVD rút gọn hoặc xấp xỉ hạng thấp dựa trên SVD.","Sao chép mỗi cột thành mười cột giống nhau.","Bổ sung mã định danh ngẫu nhiên cho từng hàng.","PCA (phân tích thành phần chính)."],"correct":[0,3],"explanation":"PCA và biểu diễn hạng thấp từ SVD đều có thể tạo biểu diễn ít chiều hơn. PCA thường được tính bằng SVD.","sources":["TL1"]},{"id":64,"section":3,"prompt":"Mục tiêu chính của giảm chiều dữ liệu là gì?","options":["Đổi mọi nhãn đúng thành nhãn sai.","Luôn tăng số đặc trưng lên gấp đôi.","Bảo đảm đạt độ chính xác 100% trên mọi tập dữ liệu.","Tạo biểu diễn với ít chiều hơn nhưng vẫn giữ thông tin hữu ích cho mục tiêu phân tích."],"correct":[3],"explanation":"Giảm chiều có thể giúp biểu diễn, trực quan hóa hoặc mô hình hóa, nhưng có thể làm mất một phần thông tin.","sources":["TL1"]},{"id":65,"section":3,"prompt":"Trước khi dùng cột “màu sắc” có giá trị đỏ, xanh, vàng với thuật toán cần đầu vào số, nên làm gì?","options":["Xóa mọi hàng có màu sắc khác nhau.","Chọn cách mã hóa biến phân loại phù hợp với thuật toán và ý nghĩa dữ liệu.","Gán số tùy ý rồi luôn coi khoảng cách giữa các số là khoảng cách màu chính xác.","Đưa nhãn đầu ra vào cột màu để mô hình dự đoán dễ hơn."],"correct":[1],"explanation":"Mã hóa phải phù hợp với bản chất biến phân loại; mã số không tự mang ý nghĩa thứ tự hoặc khoảng cách.","sources":["TL1"]},{"id":66,"section":3,"prompt":"Tại sao chuẩn hóa hoặc điều chỉnh thang đo có thể quan trọng với thuật toán dựa trên khoảng cách?","options":["Chuẩn hóa biến dữ liệu không nhãn thành dữ liệu có nhãn.","Mọi thuật toán đều bắt buộc dùng đúng cùng một thang đo cố định.","Chuẩn hóa luôn loại bỏ hoàn toàn thiên lệch xã hội.","Đặc trưng có thang đo lớn có thể chi phối khoảng cách nếu không được xử lý phù hợp."],"correct":[3],"explanation":"Với các thuật toán nhạy với thang đo, việc điều chỉnh thang đo giúp so sánh đặc trưng hợp lý hơn.","sources":["TL1"]},{"id":67,"section":3,"prompt":"Chọn cách điền các giá trị còn thiếu trong một biến là hoạt động thuộc nhóm nào?","options":["Gán phần thưởng cho tác nhân chơi game.","Truyền thông đối ngoại cho sản phẩm.","Triển khai phần cứng cảm biến.","Tiền xử lý dữ liệu."],"correct":[3],"explanation":"Xử lý giá trị thiếu là một nhiệm vụ tiền xử lý cần thực hiện và kiểm tra phù hợp với dữ liệu.","sources":["TL1"]},{"id":68,"section":3,"prompt":"Khi chuẩn hóa trước khi đánh giá mô hình trên tập kiểm tra, quy trình nào giúp tránh rò rỉ dữ liệu?","options":["Dùng nhãn của tập kiểm tra để chọn cách chuẩn hóa tốt nhất.","Gộp tập kiểm tra vào tập huấn luyện rồi báo kết quả trên chính dữ liệu đó.","Ước lượng tham số bằng cả tập huấn luyện lẫn tập kiểm tra trước khi đánh giá.","Ước lượng tham số chuẩn hóa trên tập huấn luyện rồi áp dụng cho tập kiểm tra."],"correct":[3],"explanation":"Thông tin từ tập kiểm tra không nên tham gia việc học phép biến đổi hoặc lựa chọn mô hình.","sources":["TL1","TL5"]},{"id":69,"section":3,"prompt":"Overfitting (quá khớp) là hiện tượng nào?","options":["Một bảng có nhiều cột văn bản hơn cột số.","Mô hình khớp quá sát dữ liệu huấn luyện nhưng khái quát kém trên dữ liệu mới.","Hệ thống có nhiều dữ liệu đến mức thiếu dung lượng ổ đĩa.","Mạng máy tính có quá nhiều người truy cập."],"correct":[1],"explanation":"Quá khớp liên quan đến khả năng khái quát hóa, không đồng nghĩa với quá tải tài nguyên.","sources":["TL1"]},{"id":70,"section":3,"prompt":"Một mô hình quá đơn giản đạt kết quả kém trên cả dữ liệu huấn luyện và dữ liệu mới. Hiện tượng nào có khả năng xảy ra?","options":["Rò rỉ nhãn làm điểm đánh giá tăng.","Underfitting (chưa khớp).","Overfitting chỉ vì có dữ liệu kiểm tra.","Học chuyển giao luôn thành công."],"correct":[1],"explanation":"Mô hình chưa nắm được cấu trúc cần thiết của bài toán có thể kém ngay cả trên dữ liệu dùng để học.","sources":["TL1"]},{"id":71,"section":3,"prompt":"Máy chủ hết RAM khi nạp một tập dữ liệu rất lớn. Mô tả nào chính xác nhất?","options":["Đây là bằng chứng dữ liệu không cần được xử lý.","Đây chắc chắn là mô hình có độ chính xác cao.","Đây chắc chắn là overfitting.","Thiếu tài nguyên hoặc quá tải xử lý; riêng hiện tượng này chưa chứng minh mô hình quá khớp."],"correct":[3],"explanation":"Overload là vấn đề tài nguyên hoặc tải hệ thống; overfitting là vấn đề khái quát hóa của mô hình.","sources":["TL1"]},{"id":72,"section":3,"prompt":"Regularization (điều chuẩn) thường hỗ trợ giảm quá khớp bằng cách nào?","options":["Chỉ tăng dung lượng ổ đĩa lưu mô hình.","Bắt mô hình ghi nhớ thêm mọi nhiễu trong dữ liệu.","Đặt ràng buộc hoặc hình phạt để hạn chế độ phức tạp hiệu dụng của mô hình.","Đưa toàn bộ nhãn kiểm tra vào huấn luyện."],"correct":[2],"explanation":"Điều chuẩn khuyến khích nghiệm ít phức tạp hơn theo một tiêu chí, qua đó có thể cải thiện khái quát hóa.","sources":["TL1"]},{"id":73,"section":3,"prompt":"Những biện pháp nào thường có thể giúp giảm quá khớp?","options":["Chọn mô hình chỉ bằng điểm trên tập huấn luyện.","Áp dụng mức điều chuẩn phù hợp.","Bổ sung dữ liệu huấn luyện đa dạng, có chất lượng và phù hợp.","Nhân bản y nguyên một vài ví dụ nhiều lần để tạo thông tin mới."],"correct":[1,2],"explanation":"Điều chuẩn và thêm dữ liệu hữu ích đều có thể giảm quá khớp; chỉ sao chép bản ghi không tạo thêm thông tin độc lập.","sources":["TL1"]},{"id":74,"section":3,"prompt":"Một cây quyết định rất sâu đang quá khớp. Hướng điều chỉnh nào hợp lý?","options":["Xóa tập kiểm tra và chỉ báo điểm huấn luyện.","Đổi tên thuật toán mà không thay đổi cách học.","Giảm độ phức tạp, chẳng hạn giới hạn độ sâu, rồi đánh giá lại.","Tăng độ sâu vô hạn để ghi nhớ thêm nhiễu."],"correct":[2],"explanation":"Kiểm soát độ phức tạp là một hướng xử lý quá khớp; vẫn cần kiểm chứng bằng dữ liệu đánh giá phù hợp.","sources":["TL1"]},{"id":75,"section":3,"prompt":"Vai trò chính của cross-validation (kiểm định chéo) là gì?","options":["Bảo đảm mô hình không bao giờ quá khớp.","Tự động tạo ra nhãn đúng cho toàn bộ dữ liệu.","Trực tiếp thay thế mọi cơ chế điều chuẩn.","Ước lượng khả năng khái quát hóa và hỗ trợ lựa chọn mô hình hoặc siêu tham số."],"correct":[3],"explanation":"Kiểm định chéo giúp đánh giá và chọn cấu hình; bản thân nó không phải cơ chế trực tiếp phạt độ phức tạp mô hình.","sources":["TL1"]},{"id":76,"section":3,"prompt":"Nhận định nào đúng về scikit-learn và sklearn?","options":["Sklearn chỉ là một loại cảm biến xe tự lái.","Scikit-learn là tên thư viện; sklearn là tên gói thường dùng khi import trong Python.","Scikit-learn chỉ dùng để trình chiếu slide.","Đây luôn là hai thuật toán học tăng cường độc lập."],"correct":[1],"explanation":"Không nên coi hai cách gọi này là hai công cụ khác nhau để tạo thêm đáp án đúng.","sources":["TL1","TL5"]},{"id":77,"section":3,"prompt":"Những công cụ nào là framework được sử dụng phổ biến để xây dựng và huấn luyện mô hình học sâu?","options":["PyTorch.","TensorFlow.","GitHub.","arXiv."],"correct":[0,1],"explanation":"PyTorch và TensorFlow là framework tính toán và học sâu; arXiv và GitHub có vai trò khác.","sources":["TL5","TL1"]},{"id":78,"section":3,"prompt":"Trong hệ sinh thái công cụ được giới thiệu, Hugging Face thường giúp nhóm dự án làm gì?","options":["Bảo đảm mọi dữ liệu đều có quyền sử dụng không giới hạn.","Loại bỏ nhu cầu đánh giá mô hình trên bài toán thực tế.","Thay thế mọi cảm biến vật lý trên xe.","Tìm và sử dụng các mô hình đã huấn luyện cùng công cụ liên quan."],"correct":[3],"explanation":"Hệ sinh thái mô hình có sẵn giúp phát triển ứng dụng, nhưng vẫn cần kiểm tra mức độ phù hợp và chất lượng.","sources":["TL5"]},{"id":79,"section":3,"prompt":"Cặp mô tả nào đúng?","options":["arXiv: truy cập bản thảo nghiên cứu; GitHub: lưu trữ và cộng tác trên kho mã nguồn.","arXiv: cảm biến khoảng cách; GitHub: bộ xử lý đồ họa.","arXiv và GitHub đều là cùng một thuật toán hồi quy.","arXiv: bộ gán nhãn ảnh tự động bắt buộc; GitHub: một dạng nhãn."],"correct":[0],"explanation":"Tài liệu phân biệt nguồn tiếp cận nghiên cứu với nền tảng chia sẻ và phát triển mã nguồn.","sources":["TL5"]},{"id":80,"section":3,"prompt":"Phát biểu nào phân loại đúng các công cụ được nêu trong Building AI Projects?","options":["PaddlePaddle là cảm biến lidar; R là dịch vụ lưu trữ ảnh bắt buộc.","PaddlePaddle là một framework học sâu; R là ngôn ngữ và môi trường tính toán thống kê.","R là tên gọi khác của tập kiểm tra; PaddlePaddle là một chỉ số chính xác.","PaddlePaddle và R đều chỉ là loại bộ nhớ máy tính."],"correct":[1],"explanation":"Các công cụ phục vụ những vai trò khác nhau; không nên đồng nhất framework, ngôn ngữ và kho mã.","sources":["TL5"]},{"id":81,"section":4,"prompt":"Trình tự khái quát của một dự án học máy trong tài liệu là gì?","options":["Triển khai → cam kết chính xác tuyệt đối → mới xác định dữ liệu.","Thu thập dữ liệu → huấn luyện và cải tiến lặp → triển khai.","Chỉ mua máy chủ → kết thúc dự án.","Chỉ viết báo cáo → không cần xây dựng hay đánh giá mô hình."],"correct":[1],"explanation":"Ba bước chính là thu thập dữ liệu, huấn luyện lặp và triển khai; thực tế có thể quay lại bước trước.","sources":["TL5"]},{"id":82,"section":4,"prompt":"Tại sao huấn luyện mô hình thường cần nhiều vòng lặp?","options":["Vòng lặp giúp bỏ qua việc đánh giá chất lượng.","Lặp lại tự nó bảo đảm đạt 100% mà không cần dữ liệu phù hợp.","Mỗi mô hình chỉ được phép đọc đúng một bản ghi mỗi năm.","Nhóm cần thử nghiệm, phân tích lỗi và cải thiện dữ liệu hoặc cấu hình mô hình."],"correct":[3],"explanation":"Phát triển ML là quá trình thực nghiệm, thường phải điều chỉnh dựa trên kết quả và lỗi quan sát được.","sources":["TL5"]},{"id":83,"section":4,"prompt":"Sau khi triển khai một mô hình, nhóm nên tiếp tục làm gì?","options":["Theo dõi hiệu năng trên dữ liệu sử dụng thực tế.","Mặc định chất lượng sẽ không thay đổi theo thời gian.","Thu thập phản hồi và cập nhật mô hình khi có căn cứ.","Xóa mọi dữ liệu phản hồi để tránh phải kiểm tra."],"correct":[0,2],"explanation":"Dữ liệu và điều kiện sử dụng có thể thay đổi; triển khai không phải điểm kết thúc của vòng đời ML.","sources":["TL5"]},{"id":84,"section":4,"prompt":"Trình tự nào mô tả đúng một dự án khoa học dữ liệu trong tài liệu?","options":["Triển khai mô hình chưa kiểm tra → không phân tích lại.","Chọn đáp án trước → chỉ giữ dữ liệu ủng hộ → kết luận.","Thu thập dữ liệu → phân tích lặp → đề xuất giả thuyết hoặc hành động.","Mua GPU → bỏ dữ liệu → công bố nguyên nhân."],"correct":[2],"explanation":"Khoa học dữ liệu đi từ dữ liệu và phân tích đến hiểu biết, giả thuyết hoặc đề xuất để hỗ trợ quyết định.","sources":["TL5"]},{"id":85,"section":4,"prompt":"Kết quả nào có thể là đầu ra hữu ích của một dự án khoa học dữ liệu dù chưa tạo hệ thống dự đoán tự động?","options":["Một thư mục trống được đổi tên.","Một cấu hình màn hình mới không liên quan đến dữ liệu.","Khuyến nghị thay đổi quy trình sản xuất dựa trên phân tích lỗi.","Một khẳng định chưa dùng dữ liệu nhưng được trình bày đẹp."],"correct":[2],"explanation":"Giá trị có thể nằm ở quyết định và cải tiến quy trình, chứ không nhất thiết ở một mô hình được triển khai.","sources":["TL4","TL5"]},{"id":86,"section":4,"prompt":"Sau khi doanh nghiệp thực hiện khuyến nghị từ phân tích dữ liệu, bước tiếp theo phù hợp là gì?","options":["Đo lường kết quả thực tế và phân tích lại để điều chỉnh hành động.","Ngừng ghi nhận dữ liệu liên quan.","Chỉ kiểm tra màu sắc của báo cáo đã gửi.","Mặc định khuyến nghị chắc chắn thành công."],"correct":[0],"explanation":"Quy trình khoa học dữ liệu cũng có tính lặp: hành động cần được kiểm chứng và cải thiện bằng dữ liệu mới.","sources":["TL5"]},{"id":87,"section":4,"prompt":"Vai trò chính của tập huấn luyện là gì?","options":["Chỉ dành cho lần đánh giá độc lập cuối cùng.","Cung cấp dữ liệu để mô hình học các tham số hoặc quy luật.","Chỉ lưu kết quả sau triển khai mà không tham gia học.","Chỉ dùng để đặt tên cho phần mềm."],"correct":[1],"explanation":"Mô hình học từ tập huấn luyện; cần dữ liệu tách biệt để đánh giá khả năng khái quát hóa.","sources":["TL1","TL5"]},{"id":88,"section":4,"prompt":"Vai trò chính của tập kiểm tra (test set) là gì?","options":["Dùng để sửa nhãn đến khi điểm báo cáo đạt tối đa.","Cho mô hình ghi nhớ trước tất cả đáp án.","Thay thế toàn bộ dữ liệu huấn luyện.","Đánh giá mô hình trên dữ liệu được giữ tách biệt khỏi việc huấn luyện và lựa chọn mô hình."],"correct":[3],"explanation":"Tập kiểm tra hỗ trợ ước lượng chất lượng trên dữ liệu chưa dùng để phát triển mô hình.","sources":["TL1","TL5"]},{"id":89,"section":4,"prompt":"Khi cần điều chỉnh siêu tham số, nên chủ yếu dựa vào dữ liệu nào?","options":["Chỉ tập huấn luyện vì điểm trên đó luôn phản ánh đúng dữ liệu mới.","Nhãn của tập kiểm tra cuối cùng sau mỗi lần thử.","Một tập dữ liệu không liên quan đến nhiệm vụ.","Tập xác thực hoặc các phần đánh giá trong kiểm định chéo trên dữ liệu phát triển."],"correct":[3],"explanation":"Dữ liệu xác thực hỗ trợ lựa chọn cấu hình; tập kiểm tra cuối cùng cần được giữ độc lập.","sources":["TL1"]},{"id":90,"section":4,"prompt":"Một ảnh xuất hiện trong tập huấn luyện và bản sao của nó xuất hiện trong tập kiểm tra. Vấn đề chính là gì?","options":["Tập kiểm tra tự động trở thành dữ liệu phi cấu trúc.","Số lớp mục tiêu tự động tăng thêm một.","Rò rỉ dữ liệu có thể làm kết quả kiểm tra lạc quan hơn thực tế.","Mô hình chắc chắn chưa khớp vì dữ liệu bị lặp."],"correct":[2],"explanation":"Trùng lặp giữa các tập làm suy yếu tính độc lập của đánh giá và có thể thổi phồng khả năng khái quát hóa.","sources":["TL1","TL5"]},{"id":91,"section":4,"prompt":"Nhóm liên tục sửa mô hình để tăng điểm trên cùng một tập kiểm tra cuối cùng. Điều gì có thể xảy ra?","options":["Nhóm gián tiếp thích nghi với tập kiểm tra, làm mất tính độc lập của kết quả đánh giá.","Mô hình không còn cần dữ liệu triển khai.","Tập kiểm tra tự động tăng số lượng mẫu độc lập.","Điểm kiểm tra luôn trở thành ước lượng không thiên lệch hơn."],"correct":[0],"explanation":"Dùng đi dùng lại tập kiểm tra để chọn mô hình biến nó thành một phần của quá trình phát triển.","sources":["TL1"]},{"id":92,"section":4,"prompt":"Mô hình đạt 99% trên tập huấn luyện nhưng chỉ 65% trên tập kiểm tra phù hợp, độc lập. Dấu hiệu này gợi ý rõ nhất điều gì?","options":["Máy tính chắc chắn bị hết dung lượng ổ đĩa.","Mô hình có thể đang quá khớp và cần kiểm tra khả năng khái quát hóa.","Tập huấn luyện chắc chắn hoàn toàn không có thông tin.","Mô hình chắc chắn đã đủ tốt để triển khai ở mọi nơi."],"correct":[1],"explanation":"Khoảng cách lớn giữa hiệu năng huấn luyện và kiểm tra là dấu hiệu thường gặp của quá khớp; vẫn cần phân tích nguyên nhân.","sources":["TL1"]},{"id":93,"section":4,"prompt":"Tiêu chí nghiệm thu nào rõ ràng và có thể kiểm chứng hơn?","options":["Sản phẩm cần tốt hơn theo cảm nhận chung.","Mô hình phải có vẻ hiện đại.","Đạt ít nhất 95% độ chính xác trên tập đánh giá độc lập, đại diện và đã thống nhất cách tính.","AI phải thật thông minh."],"correct":[2],"explanation":"Tiêu chí cần nêu chỉ số, ngưỡng, dữ liệu và cách đánh giá. Ngưỡng 95% là ví dụ, không phải chuẩn chung cho mọi dự án.","sources":["TL5"]},{"id":94,"section":4,"prompt":"Vì sao không nên mặc định mọi dự án ML đều có thể đạt độ chính xác 100%?","options":["Nhãn có thể sai hoặc mơ hồ.","Tập kiểm tra luôn phải chứa đúng một bản ghi.","Mọi bài toán đều không thể đo lường hiệu năng.","Có thể thiếu dữ liệu phù hợp hoặc gặp giới hạn của phương pháp."],"correct":[0,3],"explanation":"Giới hạn dữ liệu, mô hình và độ rõ ràng của nhãn đều ảnh hưởng mức hiệu năng khả thi.","sources":["TL4","TL5"]},{"id":95,"section":4,"prompt":"Những nội dung nào thuộc thẩm định kỹ thuật của một dự án AI?","options":["Thời gian kỹ thuật cần để xây dựng giải pháp.","Lượng dữ liệu cần thiết và dữ liệu đang có.","Màu chủ đạo của tài liệu quảng cáo, tách rời yêu cầu kỹ thuật.","Mức hiệu năng cần đạt và khả năng đạt được."],"correct":[0,1,3],"explanation":"Tài liệu nhấn mạnh hiệu năng, dữ liệu và thời gian kỹ thuật khi đánh giá tính khả thi.","sources":["TL5"]},{"id":96,"section":4,"prompt":"Những lợi ích nào thuộc đánh giá giá trị kinh doanh của dự án AI?","options":["Giảm chi phí.","Tạo sản phẩm hoặc dịch vụ mới.","Tăng doanh thu.","Tăng số dòng mã bất kể tác động thực tế."],"correct":[0,1,2],"explanation":"Giá trị kinh doanh cần gắn với kết quả của tổ chức, không chỉ với khối lượng hoạt động kỹ thuật.","sources":["TL5"]},{"id":97,"section":4,"prompt":"Một dự án AI tốt thường nằm ở giao điểm nào?","options":["Dữ liệu lớn nhất và chi phí cao nhất.","Thuật toán mới nhất và tên sản phẩm dài nhất.","Khả thi về kỹ thuật và có giá trị kinh doanh.","Kỳ vọng cao nhất và yêu cầu ít rõ ràng nhất."],"correct":[2],"explanation":"Dự án có giá trị nhưng không khả thi, hoặc khả thi nhưng không tạo giá trị, đều cần được xem xét lại.","sources":["TL5"]},{"id":98,"section":4,"prompt":"Cách tiếp cận nào phù hợp khi xem xét AI trong một nghề có nhiều nhiệm vụ?","options":["Tìm nhiệm vụ cụ thể mà AI có thể hỗ trợ hoặc tự động hóa hiệu quả.","Mặc định phải tự động hóa toàn bộ nghề ngay từ đầu.","Bỏ qua quy trình làm việc thực tế của người dùng.","Chỉ chọn nhiệm vụ khó nhất dù không có dữ liệu."],"correct":[0],"explanation":"Một công việc gồm nhiều nhiệm vụ; phân tích ở cấp nhiệm vụ giúp tìm phạm vi dự án phù hợp.","sources":["TL5","TL3"]},{"id":99,"section":4,"prompt":"Vì sao cần phối hợp chuyên gia lĩnh vực và nhóm AI khi chọn dự án?","options":["Để kết hợp hiểu biết về nhu cầu, dữ liệu và giá trị với đánh giá khả năng kỹ thuật.","Để chuyên gia lĩnh vực không cần góp ý tiêu chí đánh giá.","Để loại bỏ mọi vòng thử nghiệm.","Để nhóm kỹ thuật không cần hiểu mục tiêu của tổ chức."],"correct":[0],"explanation":"Hai phía cung cấp kiến thức bổ sung cho nhau, giúp xác định đúng vấn đề và giải pháp khả thi.","sources":["TL2","TL5"]},{"id":100,"section":4,"prompt":"Yêu cầu nào được phát biểu rõ hơn để bắt đầu một dự án ML?","options":["Hãy đưa AI vào mọi thứ càng sớm càng tốt.","Dự đoán khách hàng nào có khả năng mua trong tháng tới từ dữ liệu tương tác hiện có.","Hãy làm một hệ thống thông minh nhưng chưa xác định người dùng.","Hãy mua mô hình lớn rồi mới tìm mục tiêu."],"correct":[1],"explanation":"Yêu cầu cụ thể làm rõ đầu ra, bối cảnh và nguồn dữ liệu, giúp kiểm tra tính khả thi và giá trị.","sources":["TL5"]},{"id":101,"section":4,"prompt":"Trong bán hàng, mô hình dự đoán khả năng mua của khách hàng có thể hỗ trợ việc gì?","options":["Bảo đảm mọi khách hàng được tiếp cận đều mua hàng.","Làm cho dữ liệu lịch sử không còn cần được kiểm tra.","Ưu tiên khách hàng tiềm năng cho hoạt động tiếp cận.","Thay thế hoàn toàn việc xác định mục tiêu kinh doanh."],"correct":[2],"explanation":"Dự đoán có thể giúp phân bổ nguồn lực bán hàng; nó không bảo đảm kết quả của từng khách hàng.","sources":["TL5"]},{"id":102,"section":4,"prompt":"Trong sản xuất, phát hiện lỗi sản phẩm bằng ảnh có thể tạo giá trị chủ yếu theo cách nào?","options":["Bảo đảm không cần đánh giá trên dây chuyền thực tế.","Tự động chứng minh mọi lỗi đều do cùng một nguyên nhân.","Loại bỏ mọi nhu cầu xác định tiêu chuẩn chất lượng.","Hỗ trợ kiểm soát chất lượng và giảm chi phí do lỗi."],"correct":[3],"explanation":"Giá trị nằm ở cải thiện nhiệm vụ kiểm định; vẫn cần tiêu chuẩn, dữ liệu và đánh giá phù hợp.","sources":["TL5"]},{"id":103,"section":4,"prompt":"Cách đặt phạm vi nào phù hợp hơn cho một dự án AI hỗ trợ tuyển dụng ban đầu?","options":["Tự động thay thế toàn bộ bộ phận nhân sự ngay lập tức.","Giữ bí mật tiêu chí và không kiểm tra kết quả.","Chọn ứng viên chỉ bằng một thuộc tính không liên quan đến năng lực.","Hỗ trợ một nhiệm vụ rõ ràng như sắp xếp hồ sơ theo tiêu chí công việc, có đánh giá chất lượng và thiên lệch."],"correct":[3],"explanation":"Nên bắt đầu từ nhiệm vụ cụ thể và xem xét cả hiệu quả lẫn tác động của sai lệch trong quyết định.","sources":["TL5","TL3"]},{"id":104,"section":4,"prompt":"Trong marketing, đầu ra nào phù hợp với một dự án phân tích khoa học dữ liệu?","options":["Xóa các dữ liệu không ủng hộ chiến dịch yêu thích.","Chỉ đếm số trang trong báo cáo.","Khẳng định chiến dịch đắt nhất chắc chắn tốt nhất mà không phân tích.","So sánh hiệu quả các chiến dịch và đề xuất phân bổ ngân sách dựa trên dữ liệu."],"correct":[3],"explanation":"Phân tích dữ liệu hỗ trợ đánh giá hoạt động và đề xuất hành động kinh doanh có căn cứ.","sources":["TL5"]},{"id":105,"section":4,"prompt":"Trong nông nghiệp, dự đoán loại bệnh từ ảnh lá cây đã gán nhãn là ví dụ của điều gì?","options":["Ứng dụng thị giác máy tính với học có giám sát.","Học tăng cường bắt buộc vì đối tượng là cây trồng.","Học không giám sát bắt buộc vì dữ liệu là ảnh.","Chỉ quản lý dung lượng ổ cứng."],"correct":[0],"explanation":"Kiểu dữ liệu ảnh không quyết định có giám sát hay không; ở đây có nhãn loại bệnh để huấn luyện.","sources":["TL5","TL4"]},{"id":106,"section":4,"prompt":"Nếu một chức năng AI tiêu chuẩn đã có giải pháp phù hợp trên thị trường, nhóm nên làm gì trước khi tự xây từ đầu?","options":["Đánh giá giải pháp sẵn có so với yêu cầu, chi phí và lợi ích của việc tự phát triển.","Luôn tự xây lại vì mọi giải pháp có sẵn đều vô dụng.","Bỏ qua cả dữ liệu và tiêu chí nghiệm thu.","Luôn mua ngay mà không kiểm tra độ phù hợp."],"correct":[0],"explanation":"Tài liệu khuyến nghị tránh tự xây lại các năng lực tiêu chuẩn khi giải pháp phù hợp đã tồn tại.","sources":["TL5"]},{"id":107,"section":4,"prompt":"Nhận định nào phản ánh đúng gợi ý của tài liệu về thuê ngoài?","options":["Thuê ngoài sẽ loại bỏ mọi nhu cầu thống nhất mục tiêu và dữ liệu.","Không dự án ML nào được phép dùng đối tác bên ngoài.","Mọi dự án khoa học dữ liệu đều bắt buộc thuê ngoài.","Một số dự án ML có thể thuê ngoài; phân tích khoa học dữ liệu thường hưởng lợi từ hiểu biết nội bộ về doanh nghiệp."],"correct":[3],"explanation":"Đây là định hướng thực tế, không phải quy tắc tuyệt đối; lựa chọn còn tùy năng lực, dữ liệu và bối cảnh.","sources":["TL5"]},{"id":108,"section":4,"prompt":"Nhóm kinh doanh yêu cầu chốt toàn bộ thiết kế rồi không thay đổi trong suốt dự án ML. Cách làm phù hợp hơn là gì?","options":["Thống nhất mục tiêu nhưng cho phép thử nghiệm và điều chỉnh dựa trên kết quả.","Không bao giờ phân tích lỗi sau lần huấn luyện đầu.","Không xác định mục tiêu để có thể thay đổi tùy ý.","Chỉ đánh giá khi sản phẩm đã dùng rộng rãi."],"correct":[0],"explanation":"Phát triển AI thường cần lặp; mục tiêu và tiêu chí rõ ràng có thể đi cùng quá trình thực nghiệm linh hoạt.","sources":["TL2","TL5"]},{"id":109,"section":4,"prompt":"Sự khác biệt cơ bản giữa triển khai trên cloud và on-premises là gì?","options":["Hai khái niệm chỉ là tên của hai thuật toán phân loại.","Cloud luôn miễn phí; on-premises luôn không có dữ liệu.","Cloud không dùng máy tính; on-premises không dùng phần mềm.","Cloud dùng hạ tầng của nhà cung cấp dịch vụ; on-premises dùng hạ tầng đặt và quản lý tại tổ chức."],"correct":[3],"explanation":"Đây là lựa chọn hạ tầng triển khai, cần cân nhắc theo nhu cầu vận hành, chi phí và quản lý dữ liệu.","sources":["TL5"]},{"id":110,"section":4,"prompt":"Vì sao GPU thường được dùng trong huấn luyện nhiều mô hình học sâu?","options":["GPU bảo đảm không có quá khớp.","GPU thay thế việc xác định mục tiêu kinh doanh.","GPU tự tạo ra nhãn đúng cho mọi mẫu dữ liệu.","GPU hỗ trợ thực hiện song song nhiều phép tính số phù hợp với các phép toán của mô hình."],"correct":[3],"explanation":"GPU có thể tăng tốc tính toán; tốc độ phần cứng không tự giải quyết chất lượng dữ liệu hay khả năng khái quát hóa.","sources":["TL5"]},{"id":111,"section":5,"prompt":"Trong pipeline loa thông minh, wakeword detection có nhiệm vụ gì?","options":["Phát hiện từ hoặc cụm từ đánh thức thiết bị.","Dự đoán doanh số bán loa trong năm.","Dịch toàn bộ Internet sang một ngôn ngữ.","Lập kế hoạch quỹ đạo cho ô tô."],"correct":[0],"explanation":"Phát hiện từ đánh thức là bước đầu để kích hoạt quá trình xử lý yêu cầu tiếp theo.","sources":["TL2"]},{"id":112,"section":5,"prompt":"Sau khi loa được đánh thức, thành phần speech recognition làm gì với câu lệnh được nói?","options":["Tự động thay đổi loại phần cứng của loa.","Phát hiện làn đường từ camera.","Chuyển âm thanh lời nói thành văn bản.","Chỉ đo mức pin của thiết bị."],"correct":[2],"explanation":"Nhận dạng tiếng nói cung cấp văn bản để các bước hiểu ngôn ngữ tiếp theo xử lý.","sources":["TL2"]},{"id":113,"section":5,"prompt":"Với câu “Đặt hẹn giờ 10 phút”, nhận dạng ý định cần xác định điều gì?","options":["Câu lệnh có bao nhiêu điểm ảnh.","Người dùng muốn đặt một bộ hẹn giờ.","Người dùng đang lái xe ở làn nào.","Nhà sản xuất của bộ nhớ thiết bị."],"correct":[1],"explanation":"Ý định là loại hành động người dùng yêu cầu; thời lượng là thông tin tham số cần trích xuất thêm.","sources":["TL2"]},{"id":114,"section":5,"prompt":"Loa hiểu đúng ý định “đặt hẹn giờ” nhưng đặt thời lượng sai. Thành phần xử lý nào cần được kiểm tra trực tiếp?","options":["Khâu chuẩn hóa độ phân giải màn hình.","Khâu phân cụm khách hàng.","Khâu phát hiện xe trong ảnh.","Khâu trích xuất và diễn giải tham số thời lượng trong câu lệnh."],"correct":[3],"explanation":"Để thực thi đúng, hệ thống cần cả ý định lẫn các tham số như “10 phút”.","sources":["TL2"]},{"id":115,"section":5,"prompt":"Chuỗi xử lý nào đúng cho một yêu cầu bằng giọng nói trên loa thông minh?","options":["Phát hiện làn đường → phanh → đọc email → phát âm thanh.","Thực thi → dự đoán doanh thu → đọc ảnh → nhận dạng tiếng nói.","Phát hiện từ đánh thức → nhận dạng tiếng nói → hiểu ý định và thông tin cần thiết → thực thi.","Nhận dạng ý định → xóa âm thanh → mới chờ từ đánh thức."],"correct":[2],"explanation":"Pipeline kết hợp nhiều thành phần có nhiệm vụ khác nhau, từ kích hoạt đến hiểu và thực hiện yêu cầu.","sources":["TL2"]},{"id":116,"section":5,"prompt":"Những nguồn cảm nhận môi trường nào được nhắc tới trong hệ xe tự lái?","options":["Radar.","Camera.","Lidar.","Một bản trình chiếu quảng cáo không cung cấp dữ liệu môi trường."],"correct":[0,1,2],"explanation":"Camera, radar và lidar cung cấp các dạng dữ liệu hỗ trợ nhận biết môi trường xung quanh xe.","sources":["TL2"]},{"id":117,"section":5,"prompt":"Từ ảnh camera, hệ thống xác định xe khác, người đi bộ, đèn tín hiệu và làn đường. Đây chủ yếu là bước nào?","options":["Điều chỉnh ngân sách quảng cáo.","Truyền thông đối ngoại.","Lập chiến lược tuyển dụng.","Nhận thức môi trường hoặc phát hiện đối tượng."],"correct":[3],"explanation":"Bước nhận thức biến dữ liệu cảm biến thành thông tin về các thành phần trong môi trường.","sources":["TL2"]},{"id":118,"section":5,"prompt":"Sau khi phát hiện một người đi bộ, hệ thống ước lượng người đó sẽ di chuyển tới đâu. Đây là bước nào?","options":["Dự đoán quỹ đạo hoặc hành vi sắp tới.","Gán nhãn thủ công cho toàn bộ dữ liệu.","Mã hóa biến phân loại.","Phát hiện từ đánh thức."],"correct":[0],"explanation":"Dự đoán chuyển động của các đối tượng giúp hệ thống lập kế hoạch hành động phù hợp.","sources":["TL2"]},{"id":119,"section":5,"prompt":"Trong xe tự lái, motion planning có vai trò gì?","options":["Chỉ chuyển âm thanh thành văn bản.","Chỉ lưu tên tài xế theo bảng chữ cái.","Chỉ gán nhãn thư rác.","Lựa chọn quỹ đạo hoặc kế hoạch chuyển động phù hợp với môi trường và mục tiêu."],"correct":[3],"explanation":"Lập kế hoạch chuyển động sử dụng thông tin nhận thức và dự đoán để quyết định cách xe di chuyển.","sources":["TL2"]},{"id":120,"section":5,"prompt":"Nhóm lệnh nào thuộc khâu điều khiển xe để thực hiện kế hoạch chuyển động?","options":["Dịch, tóm tắt và đặt tiêu đề.","Gán nhãn email và quản lý lịch họp.","Lái, tăng tốc và phanh.","Phân cụm, vẽ biểu đồ và viết báo cáo."],"correct":[2],"explanation":"Khâu điều khiển biến kế hoạch thành tác động lên các cơ cấu vận hành của xe.","sources":["TL2"]},{"id":121,"section":5,"prompt":"GPS và bản đồ hỗ trợ xe tự lái chủ yếu theo cách nào?","options":["Chỉ tạo ra giọng nói tổng hợp.","Tự thay thế hoàn toàn mọi nhu cầu cảm nhận chướng ngại vật.","Cung cấp thông tin vị trí và bối cảnh tuyến đường.","Tự chứng minh mọi quyết định lái xe đều chính xác."],"correct":[2],"explanation":"Vị trí và bản đồ bổ sung cho dữ liệu cảm biến; không đồng nghĩa đã quan sát đầy đủ môi trường hiện tại.","sources":["TL2"]},{"id":122,"section":5,"prompt":"Nhận định nào đúng về lidar và radar trong một hệ thống AI?","options":["Chúng luôn là hai loại mạng nơ-ron sâu.","Chúng là cảm biến cung cấp dữ liệu; bản thân cảm biến không đồng nghĩa với một thuật toán AI.","Chúng chỉ là tên khác của học có giám sát.","Chúng tự tạo ra mọi mục tiêu kinh doanh của hệ thống."],"correct":[1],"explanation":"Cần phân biệt phần cứng thu nhận dữ liệu với thuật toán xử lý và suy luận từ dữ liệu đó.","sources":["TL2"]},{"id":123,"section":5,"prompt":"Vai trò chính của Software Engineer trong nhóm AI là gì?","options":["Xây dựng và tích hợp phần mềm phục vụ sản phẩm hoặc hệ thống.","Xác định ưu tiên sản phẩm AI theo giá trị kinh doanh như nhiệm vụ trọng tâm.","Phân tích dữ liệu và trình bày insights kinh doanh như nhiệm vụ trọng tâm.","Nghiên cứu phương pháp học máy mới như nhiệm vụ trọng tâm."],"correct":[0],"explanation":"Kỹ sư phần mềm xây phần mềm và tích hợp các thành phần, bao gồm thành phần AI khi cần.","sources":["TL2"]},{"id":124,"section":5,"prompt":"Vai trò nào tập trung xây dựng và đưa các hệ thống học máy vào hoạt động?","options":["AI Product Manager.","Machine Learning Engineer.","Machine Learning Researcher.","Data Engineer."],"correct":[1],"explanation":"ML Engineer tập trung vào mô hình và hệ thống ML để đáp ứng nhu cầu sử dụng.","sources":["TL2"]},{"id":125,"section":5,"prompt":"Nhiệm vụ nào phù hợp nhất với Machine Learning Researcher?","options":["Xây dựng giao diện và tích hợp các chức năng phần mềm đã thiết kế.","Nghiên cứu và phát triển các phương pháp hoặc kỹ thuật ML mới.","Tổ chức hạ tầng lưu trữ và cung cấp dữ liệu cho các phòng ban.","Phân tích doanh số để trình bày khuyến nghị kinh doanh."],"correct":[1],"explanation":"Nhà nghiên cứu ML phát triển kỹ thuật mới; công việc khác với chỉ áp dụng phương pháp sẵn có.","sources":["TL2"]},{"id":126,"section":5,"prompt":"Vai trò nào chủ yếu phân tích dữ liệu và trình bày các phát hiện để hỗ trợ quyết định?","options":["Software Engineer.","AI Product Manager.","Data Scientist.","Data Engineer."],"correct":[2],"explanation":"Data Scientist khai thác dữ liệu, rút ra insights và truyền đạt ý nghĩa của kết quả.","sources":["TL2"]},{"id":127,"section":5,"prompt":"Nhiệm vụ nào phù hợp nhất với Data Engineer?","options":["Phân tích chiến dịch và trình bày khuyến nghị marketing.","Xác định ưu tiên tính năng AI theo giá trị sản phẩm.","Tổ chức và xây dựng hạ tầng dữ liệu để dữ liệu dễ truy cập, an toàn và vận hành hiệu quả.","Đề xuất một phương pháp học máy mới để công bố nghiên cứu."],"correct":[2],"explanation":"Data Engineer giúp thu thập, tổ chức, lưu trữ và cung cấp dữ liệu cho các hoạt động phân tích và ML.","sources":["TL2"]},{"id":128,"section":5,"prompt":"AI Product Manager cần tập trung vào câu hỏi nào?","options":["Sản phẩm hoặc tính năng AI nào vừa có giá trị cho người dùng, vừa khả thi về kỹ thuật?","Làm sao triển khai chi tiết giao diện và các chức năng phần mềm?","Làm sao chứng minh tính chất toán học của một phương pháp ML mới?","Làm sao tổ chức các luồng dữ liệu để lưu trữ và truy cập hiệu quả?"],"correct":[0],"explanation":"Quản lý sản phẩm AI kết nối nhu cầu, giá trị sản phẩm và khả năng thực hiện của công nghệ.","sources":["TL2"]},{"id":129,"section":5,"prompt":"Thứ tự năm bước trong AI Transformation Playbook là gì?","options":["Truyền thông → chiến lược AI → đào tạo → bỏ đội nội bộ → không cần thí điểm.","Dự án thí điểm → đội AI nội bộ → đào tạo AI rộng rãi → chiến lược AI → truyền thông.","Mua dữ liệu → bỏ đào tạo → tuyển một người → dừng dự án → quảng cáo.","Chiến lược AI → triển khai toàn công ty ngay → không đo lường → dừng học tập → thí điểm."],"correct":[1],"explanation":"Playbook bắt đầu bằng thí điểm tạo động lực và kinh nghiệm, sau đó xây năng lực tổ chức và chiến lược.","sources":["TL2"]},{"id":130,"section":5,"prompt":"Khi chọn dự án thí điểm AI đầu tiên, tiêu chí nào được ưu tiên?","options":["Chọn dự án không thể đo lường kết quả.","Luôn chọn dự án khó nhất bất kể khả năng hoàn thành.","Khả năng thành công và tạo động lực học hỏi, không nhất thiết là dự án có giá trị lớn nhất.","Luôn chọn dự án cần thay thế toàn bộ doanh nghiệp."],"correct":[2],"explanation":"Thí điểm cần giúp tổ chức có một thành công ban đầu và tích lũy kinh nghiệm triển khai.","sources":["TL2"]},{"id":131,"section":5,"prompt":"Theo Building AI in Your Company, dự án thí điểm nên có khả năng cho thấy tiến triển trong khoảng thời gian nào?","options":["6–12 ngày.","6–12 tháng.","6–12 năm.","Chỉ sau 20 năm."],"correct":[1],"explanation":"Mốc 6–12 tháng được nêu cho việc thể hiện tiến triển của thí điểm, không phải cam kết chung cho mọi dự án.","sources":["TL2"]},{"id":132,"section":5,"prompt":"Đối với dự án thí điểm đầu tiên, phương án tổ chức thực hiện nào phù hợp với playbook?","options":["Bắt buộc chỉ thuê ngoài trong mọi trường hợp.","Bắt buộc chỉ dùng nội bộ trong mọi trường hợp.","Có thể dùng đội nội bộ hoặc đối tác bên ngoài tùy năng lực và hoàn cảnh.","Không cần có người chịu trách nhiệm thực hiện."],"correct":[2],"explanation":"Mục tiêu ban đầu là thực hiện thí điểm hiệu quả; nguồn lực có thể được lựa chọn linh hoạt.","sources":["TL2"]},{"id":133,"section":5,"prompt":"Xây dựng một đội AI nội bộ có thể giúp doanh nghiệp điều gì?","options":["Bảo đảm không cần trao đổi với các phòng ban.","Tự động biến mọi ý tưởng thành dự án khả thi.","Tích lũy năng lực AI và phối hợp nguồn lực chuyên môn cho các đơn vị kinh doanh.","Loại bỏ mọi nhu cầu dữ liệu của tổ chức."],"correct":[2],"explanation":"Đội nội bộ giúp duy trì năng lực và phối hợp triển khai, nhưng vẫn phải gắn với nhu cầu của doanh nghiệp.","sources":["TL2"]},{"id":134,"section":5,"prompt":"“Đào tạo AI rộng rãi” trong chuyển đổi doanh nghiệp nên được hiểu như thế nào?","options":["Chỉ đào tạo sau khi tất cả dự án đã kết thúc.","Chỉ một kỹ sư được học, mọi người khác không cần hiểu gì.","Trang bị kiến thức AI phù hợp cho các nhóm vai trò, gồm lãnh đạo, quản lý và người thực hiện.","Mọi nhân viên phải học đúng một chương trình kỹ thuật chuyên sâu giống nhau."],"correct":[2],"explanation":"Nhiều vai trò cần hiểu AI ở mức phù hợp để phối hợp và ra quyết định; nội dung không nhất thiết giống nhau.","sources":["TL2"]},{"id":135,"section":5,"prompt":"Chiến lược AI của doanh nghiệp nên gắn với điều gì?","options":["Chỉ số lượng bài đăng quảng bá về AI.","Chỉ thuật ngữ đang nổi mà không xét nhu cầu.","Thế mạnh, mục tiêu kinh doanh và khả năng xây dựng lợi thế từ dữ liệu.","Chỉ mong muốn sử dụng mô hình lớn nhất."],"correct":[2],"explanation":"Chiến lược AI cần liên kết công nghệ, dữ liệu và lợi thế thực tế của tổ chức.","sources":["TL2"]},{"id":136,"section":5,"prompt":"Trong playbook, truyền thông về AI bao gồm những hướng nào?","options":["Chỉ trao đổi trong nhóm kỹ thuật và không có ai khác.","Truyền thông nội bộ để thống nhất nhận thức và phối hợp.","Chỉ quảng cáo khả năng chưa được kiểm chứng.","Truyền thông đối ngoại phù hợp với khách hàng và các bên liên quan."],"correct":[1,3],"explanation":"Truyền thông giúp giải thích định hướng và giá trị AI cho cả các nhóm bên trong và bên ngoài tổ chức.","sources":["TL2"]},{"id":137,"section":5,"prompt":"Chu trình nào mô tả vòng lặp tạo lợi thế từ AI và dữ liệu?","options":["Tăng quảng cáo → bỏ dữ liệu → không đo lường → chắc chắn dẫn đầu.","Sản phẩm tốt hơn → nhiều người dùng hơn → nhiều dữ liệu hữu ích hơn → tiếp tục cải thiện sản phẩm.","Ít dữ liệu hơn → bỏ người dùng → bỏ cải tiến → sản phẩm luôn tốt hơn.","Mua máy chủ → ngừng thu thập phản hồi → kết thúc sản phẩm."],"correct":[1],"explanation":"Vòng lặp phụ thuộc việc biến dữ liệu phù hợp thành cải tiến có giá trị, không chỉ tăng dữ liệu một cách cơ học.","sources":["TL2"]},{"id":138,"section":5,"prompt":"Vì sao doanh nghiệp nên xem xét một hệ thống dữ liệu thống nhất thay vì các kho tách rời khó kết nối?","options":["Để mọi dữ liệu tự động trở thành công khai.","Để dữ liệu dễ được khai thác và phối hợp sử dụng cho các dự án phù hợp.","Để không cần kiểm tra chất lượng dữ liệu.","Để mọi nhân viên đều được truy cập mọi dữ liệu không cần phân quyền."],"correct":[1],"explanation":"Khả năng kết nối và tiếp cận dữ liệu giúp phát triển AI; vẫn cần tổ chức và kiểm soát truy cập phù hợp.","sources":["TL2"]},{"id":139,"section":5,"prompt":"Sai lầm nào thường làm dự án AI trong doanh nghiệp kém hiệu quả?","options":["Kỳ vọng nhóm kỹ thuật tự giải quyết mọi vấn đề mà không có phối hợp với phía kinh doanh.","Thử nghiệm theo từng vòng và học từ kết quả.","Kết hợp chuyên gia kỹ thuật với chuyên gia lĩnh vực.","Cùng thống nhất mục tiêu và chỉ số thành công."],"correct":[0],"explanation":"AI cần hiểu bối cảnh và quy trình kinh doanh; chỉ có năng lực kỹ thuật là chưa đủ.","sources":["TL2"]},{"id":140,"section":5,"prompt":"Doanh nghiệp tuyển một vài chuyên gia AI nhưng không cải thiện dữ liệu hoặc cách phối hợp. Nhận định nào hợp lý?","options":["Tuyển người là chưa đủ; cần năng lực dữ liệu, quy trình và sự hỗ trợ của tổ chức.","Không cần xác định giá trị kinh doanh nữa.","Chỉ tuyển người là bảo đảm mọi dự án sẽ thành công.","Mọi phòng ban có thể ngừng chia sẻ yêu cầu công việc."],"correct":[0],"explanation":"Chuyển đổi AI là thay đổi năng lực và cách vận hành của tổ chức, không chỉ là bổ sung một vài vị trí.","sources":["TL2","TL4"]},{"id":141,"section":6,"prompt":"“Goldilocks rule” trong tài liệu AI and Society khuyến khích cách nhìn nào?","options":["Xem AI là giải pháp hoàn hảo cho mọi vấn đề.","Kết luận AI không thể tạo ra bất kỳ giá trị nào.","Chỉ quan tâm quảng cáo, không xét giới hạn công nghệ.","Cân bằng và thực tế: tránh cả kỳ vọng quá mức lẫn bi quan cực đoan về AI."],"correct":[3],"explanation":"Cách nhìn vừa phải giúp nhận diện cả cơ hội lẫn giới hạn thực tế của AI.","sources":["TL3"]},{"id":142,"section":6,"prompt":"Những giới hạn nào cần được cân nhắc khi sử dụng AI?","options":["Mọi mô hình AI đều có thể giải thích hoàn hảo từng dự đoán.","AI luôn đúng nếu được chạy trên máy tính mạnh.","Hiệu năng có thể chưa đủ tốt ở một số nhiệm vụ hoặc tình huống.","Một số mô hình khó giải thích rõ cách đi đến kết quả."],"correct":[2,3],"explanation":"Tài liệu đề cập cả giới hạn hiệu năng và khả năng giải thích; phần cứng mạnh không loại bỏ các giới hạn này.","sources":["TL3"]},{"id":143,"section":6,"prompt":"Vì sao dữ liệu lịch sử có thiên lệch có thể tạo ra kết quả AI thiên lệch?","options":["Thiên lệch chỉ có thể xuất hiện do lỗi bàn phím.","Mô hình có thể học và tái tạo các mẫu phân biệt đã tồn tại trong dữ liệu.","Dữ liệu lịch sử luôn trung lập tuyệt đối.","Mô hình tự động biết mọi chuẩn công bằng mà không cần đánh giá."],"correct":[1],"explanation":"Dữ liệu phản ánh các quyết định và điều kiện trong quá khứ; mô hình có thể tiếp nhận những bất bình đẳng đó.","sources":["TL3","TL1"]},{"id":144,"section":6,"prompt":"Hệ thống tuyển dụng được học từ các quyết định quá khứ vốn ít chọn một nhóm ứng viên. Rủi ro cần kiểm tra là gì?","options":["Mô hình tự động sửa toàn bộ bất bình đẳng chỉ vì dùng dữ liệu số.","Dữ liệu không thể ảnh hưởng đến quyết định tuyển dụng.","Chỉ cần tăng tốc máy chủ là loại bỏ được thiên lệch.","Mô hình tiếp tục gây bất lợi cho nhóm đó do học các mẫu thiên lệch."],"correct":[3],"explanation":"Cần xem xét dữ liệu, tiêu chí và kết quả giữa các nhóm, thay vì giả định quyết định bằng thuật toán luôn công bằng.","sources":["TL3"]},{"id":145,"section":6,"prompt":"Những việc nào có thể góp phần giảm thiên lệch trong phát triển AI?","options":["Sử dụng dữ liệu bao quát hơn và kiểm tra sự đại diện của các nhóm.","Chỉ giữ dữ liệu của nhóm đông nhất để tránh phải so sánh.","Xây dựng đội ngũ có góc nhìn đa dạng để phát hiện vấn đề.","Giả định mọi nhãn lịch sử đều không có định kiến."],"correct":[0,2],"explanation":"Dữ liệu tốt hơn và đội ngũ đa dạng là hai hướng được nêu; chúng cần kết hợp với đánh giá và giải pháp kỹ thuật.","sources":["TL3"]},{"id":146,"section":6,"prompt":"Minh bạch và kiểm toán hệ thống AI giúp ích chủ yếu ở điểm nào?","options":["Cho phép công bố không giới hạn mọi dữ liệu cá nhân.","Thay thế hoàn toàn việc đánh giá dữ liệu.","Tạo điều kiện phát hiện, xem xét và xử lý các vấn đề về thiên lệch hoặc sử dụng hệ thống.","Bảo đảm tuyệt đối hệ thống không bao giờ có lỗi."],"correct":[2],"explanation":"Minh bạch và kiểm toán hỗ trợ trách nhiệm giải trình; không phải bảo đảm rằng mọi rủi ro đã biến mất.","sources":["TL3"]},{"id":147,"section":6,"prompt":"Mô hình có độ chính xác trung bình cao nhưng hoạt động kém hơn nhiều với một nhóm người dùng. Cần làm gì?","options":["Bỏ qua vì độ chính xác chung đã cao.","Đánh giá kết quả theo nhóm và tìm nguyên nhân của chênh lệch.","Chỉ tăng số chữ số sau dấu phẩy của chỉ số tổng.","Ngừng ghi nhận nhóm người dùng bị ảnh hưởng."],"correct":[1],"explanation":"Một chỉ số trung bình có thể che khuất chênh lệch giữa các nhóm và các vấn đề công bằng.","sources":["TL3","TL1"]},{"id":148,"section":6,"prompt":"Tình huống nào thể hiện rủi ro xâm phạm quyền riêng tư?","options":["Sử dụng dữ liệu cá nhân ngoài phạm vi được phép để theo dõi người dùng.","Giới hạn quyền truy cập dữ liệu theo nhiệm vụ.","Kiểm tra điều kiện sử dụng trước khi chia sẻ dữ liệu.","Chỉ thu thập thông tin cần thiết cho mục tiêu đã xác định."],"correct":[0],"explanation":"Rủi ro riêng tư liên quan đến việc thu thập, sử dụng hoặc chia sẻ thông tin cá nhân không phù hợp.","sources":["TL3","TL1"]},{"id":149,"section":6,"prompt":"Deepfake là ví dụ của loại rủi ro nào?","options":["Một quy trình sao lưu dữ liệu không mất mát.","Nội dung giả được tạo hoặc chỉnh sửa bằng AI có thể khiến người xem tin một người đã nói hay làm điều không có thật.","Một cách luôn bảo đảm tính xác thực của mọi video.","Một cảm biến định vị trên xe."],"correct":[1],"explanation":"Deepfake có thể bị dùng để giả mạo hoặc lan truyền thông tin sai; cần đánh giá nguồn và tính xác thực của nội dung.","sources":["TL3"]},{"id":150,"section":6,"prompt":"Việc dùng AI tạo hàng loạt bình luận giả có thể gây tác động nào?","options":["Tự loại bỏ hoàn toàn thông tin sai lệch.","Chứng minh rằng mọi bình luận trực tuyến đều đáng tin.","Làm sai lệch nhận thức về dư luận và mức độ ủng hộ thật.","Bảo đảm mọi người đều được cung cấp thông tin chính xác."],"correct":[2],"explanation":"Bình luận giả có thể tạo ấn tượng sai về số người hoặc ý kiến thực sự tồn tại.","sources":["TL3"]},{"id":151,"section":6,"prompt":"Adversarial attack (tấn công đối kháng) nhằm vào mô hình thường được mô tả như thế nào?","options":["Chỉ bổ sung dữ liệu đúng để cải thiện mô hình.","Chỉ giảm kích thước tệp mà giữ nguyên mọi hành vi dự đoán.","Cố ý thay đổi đầu vào để đánh lừa mô hình đưa ra kết quả sai.","Chỉ lưu bản sao dự phòng của tập huấn luyện."],"correct":[2],"explanation":"Một thay đổi nhỏ với con người vẫn có thể gây tác động lớn lên dự đoán của mô hình.","sources":["TL3"]},{"id":152,"section":6,"prompt":"Ví dụ nào minh họa tấn công đối kháng trong thế giới vật lý?","options":["Thêm dữ liệu kiểm tra độc lập.","Dán họa tiết có chủ đích lên biển báo để làm mô hình thị giác nhận dạng sai.","Ghi rõ nguồn của một bức ảnh trong báo cáo.","Cập nhật hướng dẫn gán nhãn cho nhân viên."],"correct":[1],"explanation":"Tấn công không chỉ tác động trực tiếp lên tệp số; thay đổi vật thể mà camera quan sát cũng có thể đánh lừa mô hình.","sources":["TL3"]},{"id":153,"section":6,"prompt":"Nhận định nào đúng về phòng thủ trước tấn công đối kháng?","options":["Không bao giờ cần thử nghiệm với đầu vào bị thay đổi.","Mọi mô hình lớn đều miễn nhiễm với loại tấn công này.","Cần được đánh giá và cải tiến liên tục, có thể làm tăng chi phí phát triển hoặc vận hành.","Chỉ cần một lần cập nhật là bảo đảm an toàn vĩnh viễn."],"correct":[2],"explanation":"Khả năng tấn công và phòng thủ đều phát triển; không nên xem một biện pháp là bảo đảm tuyệt đối.","sources":["TL3"]},{"id":154,"section":6,"prompt":"Vì sao khả năng giải thích có thể quan trọng trong một ứng dụng AI hỗ trợ quyết định?","options":["Giúp người liên quan hiểu cơ sở kết quả và phát hiện các dấu hiệu bất hợp lý.","Vì mô hình dễ giải thích luôn chính xác 100%.","Vì giải thích có thể thay thế mọi tiêu chí nghiệm thu.","Vì có giải thích thì không cần kiểm tra dữ liệu."],"correct":[0],"explanation":"Khả năng giải thích hỗ trợ sử dụng và xem xét kết quả, nhưng không tự chứng minh kết quả đúng hoặc công bằng.","sources":["TL3","TL1"]},{"id":155,"section":6,"prompt":"Khi phát hiện hệ thống AI đưa ra quyết định gây bất lợi không hợp lý, cách xử lý có trách nhiệm là gì?","options":["Xem xét phản hồi, kiểm tra dữ liệu và mô hình, rồi điều chỉnh cách sử dụng hoặc giải pháp.","Chỉ đổi tên mô hình mà không kiểm tra nguyên nhân.","Xóa toàn bộ phản ánh để tránh bị chất vấn.","Giữ nguyên vì kết quả của thuật toán luôn đúng."],"correct":[0],"explanation":"Trách nhiệm khi triển khai bao gồm theo dõi tác động và xử lý vấn đề phát sinh từ sử dụng thực tế.","sources":["TL1","TL3"]},{"id":156,"section":6,"prompt":"Theo AI and Society, một hướng ứng dụng AI phù hợp cho các nền kinh tế đang phát triển là gì?","options":["Tăng cường các ngành có thế mạnh và giải quyết nhu cầu thực tế của mình.","Chỉ đầu tư vào lĩnh vực không có dữ liệu hoặc năng lực liên quan.","Chỉ sao chép sản phẩm nước ngoài bất kể nhu cầu địa phương.","Từ bỏ mọi ngành hiện có để chạy theo một công nghệ duy nhất."],"correct":[0],"explanation":"AI có thể hỗ trợ lợi thế hiện có của một nền kinh tế; chiến lược cần phù hợp điều kiện thực tế.","sources":["TL3"]},{"id":157,"section":6,"prompt":"Hợp tác công–tư có thể hỗ trợ ứng dụng AI trong phát triển kinh tế như thế nào?","options":["Bảo đảm mọi dự án đều thành công mà không đánh giá.","Kết hợp nguồn lực, năng lực và nhu cầu của khu vực công với khu vực tư.","Loại bỏ hoàn toàn trách nhiệm của các bên tham gia.","Làm cho đào tạo kỹ năng không còn cần thiết."],"correct":[1],"explanation":"Tài liệu nêu hợp tác công–tư như một hướng hỗ trợ xây dựng năng lực và ứng dụng AI.","sources":["TL3"]},{"id":158,"section":6,"prompt":"Vì sao tự động hóa một số nhiệm vụ chưa đồng nghĩa với việc một nghề chắc chắn biến mất hoàn toàn?","options":["AI không thể thay đổi bất kỳ cách làm việc nào.","Một nghề thường gồm nhiều nhiệm vụ, trong đó có nhiệm vụ vẫn cần con người hoặc được tổ chức lại.","Một nhiệm vụ luôn tương đương với toàn bộ nền kinh tế.","Mọi nhiệm vụ trong cùng một nghề luôn giống hệt nhau."],"correct":[1],"explanation":"Tác động cần được phân tích ở cấp nhiệm vụ và cách tổ chức công việc, không chỉ gắn nhãn mất hoặc còn nghề.","sources":["TL3","TL5"]},{"id":159,"section":6,"prompt":"Biện pháp nào hỗ trợ người lao động thích ứng với thay đổi do AI?","options":["Giả định mọi kỹ năng sẽ không thay đổi trong suốt sự nghiệp.","Học tập suốt đời và cập nhật kỹ năng phù hợp với công việc.","Chỉ thay tên chức danh mà không phát triển năng lực.","Ngừng học ngay sau khi nhận bằng."],"correct":[1],"explanation":"Học tập liên tục giúp thích ứng khi công cụ, nhiệm vụ và nhu cầu lao động thay đổi.","sources":["TL3"]},{"id":160,"section":6,"prompt":"Khái niệm conditional basic income được nhắc đến trong tài liệu nên hiểu theo hướng nào?","options":["Một thuật toán phân cụm dữ liệu thu nhập.","Khoản hỗ trợ chắc chắn vô điều kiện cho mọi người trong mọi hoàn cảnh.","Hỗ trợ thu nhập cơ bản có điều kiện, có thể gắn với yêu cầu tham gia đào tạo hoặc hoạt động phù hợp.","Một hình thức phạt mô hình vì dự đoán sai."],"correct":[2],"explanation":"Từ conditional nhấn mạnh yếu tố có điều kiện; không nên tự đồng nhất với thu nhập cơ bản vô điều kiện.","sources":["TL3"]},{"id":161,"section":6,"prompt":"Theo dự báo được trích trong tài liệu AI and Society, khoảng bao nhiêu triệu việc làm có thể bị thay thế đến năm 2030?","options":["4.000–8.000 triệu.","4–8 triệu.","40–80 triệu.","400–800 triệu."],"correct":[3],"explanation":"Đây là khoảng dự báo 400–800 triệu trong nguồn; không phải số việc làm thực tế đã được xác nhận hiện nay.","sources":["TL3"]},{"id":162,"section":6,"prompt":"Theo cùng dự báo trong AI and Society, khoảng bao nhiêu triệu việc làm có thể được tạo mới đến năm 2030?","options":["55–89 triệu.","555–890 triệu.","400–800 triệu.","5–9 triệu."],"correct":[1],"explanation":"Nguồn nêu khoảng 555–890 triệu việc làm tạo mới. Hai khoảng dự báo không bảo đảm từng người sẽ chuyển việc thuận lợi.","sources":["TL3"]},{"id":163,"section":6,"prompt":"Khi trích lại một con số dự báo về tác động AI trong slide, nên làm gì?","options":["Trộn các con số từ các nguồn thành một giá trị duy nhất mà không giải thích.","Bỏ năm dự báo để có thể dùng cho mọi thời điểm.","Trình bày như số liệu thực tế hiện tại dù chưa có kiểm chứng.","Nêu rõ tài liệu, mốc thời gian và tính chất dự báo của con số."],"correct":[3],"explanation":"Dự báo phụ thuộc nguồn, thời điểm và giả định; cần giữ bối cảnh để không gây hiểu sai.","sources":["TL3","TL4","TL6"]},{"id":164,"section":6,"prompt":"Cặp thông tin nào khớp với hai tài liệu đã cung cấp về giá trị kinh tế của AI?","options":["Cả hai tài liệu đều chỉ nêu 3–4 tỷ USD đến 2030.","Cả hai tài liệu đều là số liệu thực tế đã đo được cho năm 2033.","What is AI: 13–22 nghìn tỷ USD đến 2033; slide Nhập Môn KHDL & TTNT: 13 nghìn tỷ USD đến 2030.","What is AI: 13–22 nghìn tỷ USD đến 2030; slide nhập môn: 13 nghìn tỷ USD đến 2033."],"correct":[2],"explanation":"Hai nguồn nêu các dự báo với mốc khác nhau. What is AI còn nêu phần GenAI khoảng 3–4 nghìn tỷ USD đến 2033.","sources":["TL4","TL6"]},{"id":165,"section":6,"prompt":"Những thực hành nào giúp sử dụng kết quả AI một cách có trách nhiệm?","options":["Coi mọi dự đoán là kết luận không thể chất vấn.","Thông báo các giới hạn quan trọng để người dùng hiểu cách sử dụng kết quả.","Chỉ đo tốc độ xử lý và bỏ qua chất lượng quyết định.","Theo dõi tác động thực tế và có cách tiếp nhận, xem xét phản hồi."],"correct":[1,3],"explanation":"Sử dụng có trách nhiệm đòi hỏi hiểu giới hạn, theo dõi chất lượng và xử lý vấn đề sau triển khai.","sources":["TL1","TL3","TL5"]},{"id":166,"section":7,"prompt":"Theo tài liệu Nhập Môn KHDL & TTNT của học phần, số tín chỉ được ghi là bao nhiêu?","options":["2 tín chỉ, với ký hiệu 2-0-4.","1 tín chỉ, với ký hiệu 1-0-0.","4 tín chỉ, với ký hiệu 4-0-0.","3 tín chỉ, với ký hiệu 3-0-0."],"correct":[0],"explanation":"Tài liệu học phần ghi 2 tín chỉ (2-0-4). Câu này kiểm tra thông tin trong tài liệu đã cung cấp.","sources":["TL6"]},{"id":167,"section":7,"prompt":"Theo tài liệu học phần, thời lượng học trực tiếp và trực tuyến được phân bổ như thế nào?","options":["12 tiết offline và 18 tiết online.","18 tiết offline và 12 tiết online.","6 tiết offline và 24 tiết online.","30 tiết offline và không có tiết online."],"correct":[0],"explanation":"Cơ cấu 12 tiết trực tiếp và 18 tiết trực tuyến phù hợp hình thức học kết hợp được giới thiệu.","sources":["TL6"]},{"id":168,"section":7,"prompt":"Theo yêu cầu chuyên cần trong tài liệu học phần, sinh viên phải tham gia tối thiểu bao nhiêu?","options":["25%, tương ứng 1 trong 4 buổi.","Không yêu cầu tham gia buổi nào.","75%, tương ứng ít nhất 3 trong 4 buổi.","50%, tương ứng 2 trong 4 buổi."],"correct":[2],"explanation":"Tài liệu quy định mức chuyên cần ít nhất 75%, được minh họa là 3/4 buổi.","sources":["TL6"]},{"id":169,"section":7,"prompt":"Theo tài liệu học phần, điểm trung bình Coursera tối thiểu để đủ điều kiện dự thi là bao nhiêu?","options":["50%.","60%.","70%.","80%."],"correct":[3],"explanation":"Mức được nêu là trung bình Coursera từ 80% trở lên; đây là một yêu cầu bên cạnh yêu cầu chuyên cần.","sources":["TL6"]},{"id":170,"section":7,"prompt":"Theo tài liệu học phần, hình thức kiểm tra giữa kỳ và thi cuối kỳ là gì?","options":["Chỉ tự đánh giá, không có bài thi.","Trắc nghiệm trực tiếp.","Chỉ nộp một bài vẽ ở nhà.","Chỉ phỏng vấn qua điện thoại."],"correct":[1],"explanation":"Cả giữa kỳ và cuối kỳ được mô tả là trắc nghiệm thực hiện trực tiếp.","sources":["TL6"]},{"id":171,"section":7,"prompt":"Theo tài liệu học phần, thời gian cho mỗi bài giữa kỳ và cuối kỳ là bao lâu?","options":["45 phút.","60 phút.","30 phút.","90 phút."],"correct":[1],"explanation":"Tài liệu nêu thời lượng 60 phút cho mỗi bài kiểm tra hoặc thi này.","sources":["TL6"]},{"id":172,"section":7,"prompt":"Theo hướng dẫn trong tài liệu học phần, kế hoạch chi tiết được theo dõi ở đâu?","options":["Một kho mã GitHub bất kỳ.","Một bài viết arXiv bất kỳ.","Chỉ trong phần cài đặt của máy tính.","Canvas."],"correct":[3],"explanation":"Canvas được nêu là nơi cung cấp kế hoạch chi tiết của học phần.","sources":["TL6"]},{"id":173,"section":7,"prompt":"Hình thức blended learning trong học phần được hiểu như thế nào?","options":["Chỉ xem quảng cáo sản phẩm AI.","Chỉ tự học mà không có kế hoạch hoặc hoạt động của học phần.","Kết hợp học trực tiếp với học trực tuyến, trong đó có nội dung Coursera.","Chỉ học trực tiếp và không dùng tài liệu trực tuyến."],"correct":[2],"explanation":"Học kết hợp phối hợp các hoạt động trực tiếp và trực tuyến để đạt mục tiêu môn học.","sources":["TL6"]},{"id":174,"section":7,"prompt":"Những năng lực nào thuộc chuẩn đầu ra được nêu trong tài liệu học phần?","options":["Bắt buộc tự chế tạo bộ xử lý GPU.","Mô tả và đánh giá ứng dụng AI, khoa học dữ liệu trong chuyên ngành.","Bắt buộc chứng minh đã tạo ra AGI.","Giải thích các khái niệm và ứng dụng cơ bản của AI, khoa học dữ liệu."],"correct":[1,3],"explanation":"Chuẩn đầu ra tập trung vào hiểu biết nền tảng và khả năng nhận diện, đánh giá ứng dụng.","sources":["TL6"]},{"id":175,"section":7,"prompt":"Nhóm nội dung nào được liệt kê trong định hướng nội dung của học phần?","options":["Chỉ điều khiển tàu vũ trụ bằng cơ học cổ điển.","GenAI, prompting và ứng dụng GenAI trong phân tích dữ liệu.","Chỉ sửa chữa phần cứng máy in.","Chỉ thiết kế vi mạch ở mức transistor."],"correct":[1],"explanation":"Slide nhập môn có nêu các chủ đề này; việc liệt kê chủ đề không đồng nghĩa slide đã trình bày sâu mọi kỹ thuật prompting.","sources":["TL6"]},{"id":176,"section":7,"prompt":"Theo gợi ý học Coursera trong tài liệu, nên duy trì thời lượng học hằng ngày khoảng bao nhiêu?","options":["Chỉ học một lần vào cuối học kỳ.","30–60 phút mỗi ngày.","Chỉ 1 phút mỗi tháng.","Không cần có thời gian học đều đặn."],"correct":[1],"explanation":"Học đều 30–60 phút mỗi ngày là một gợi ý để duy trì tiến độ và khả năng tiếp thu.","sources":["TL6"]},{"id":177,"section":7,"prompt":"Những thành phần nào được nêu trong cấu trúc học tập của một module Coursera?","options":["Hoạt động trao đổi hoặc thảo luận.","Bắt buộc có một chuyến khảo sát thực địa ở nước ngoài.","Practice quiz, tổng kết và graded quiz.","Video và bài đọc."],"correct":[0,2,3],"explanation":"Tài liệu mô tả nhiều hoạt động học và kiểm tra, không chỉ xem video.","sources":["TL6"]},{"id":178,"section":7,"prompt":"Dấu tích xanh ở một nội dung trên Coursera cho biết điều gì theo hướng dẫn trong tài liệu?","options":["Nội dung đã được đánh dấu hoàn thành.","Người học chắc chắn hiểu hoàn hảo mọi kiến thức.","Người học đã tự động đạt mọi điều kiện thi của học phần.","Người học không cần thực hiện graded quiz nào khác."],"correct":[0],"explanation":"Trạng thái hoàn thành không đồng nghĩa mức độ thành thạo hay việc đã đáp ứng tất cả yêu cầu đánh giá.","sources":["TL6"]},{"id":179,"section":7,"prompt":"Những thói quen nào phù hợp với cách học được khuyến nghị?","options":["Kết hợp video, bài đọc, bài tập và thảo luận hoặc học nhóm.","Chỉ xem đáp án mà không tự làm câu hỏi.","Chỉ mở video chạy nền để có dấu hoàn thành.","Đặt mục tiêu, theo dõi tiến độ và tự đánh giá."],"correct":[0,3],"explanation":"Kết hợp hoạt động học chủ động với theo dõi tiến độ giúp ôn tập hiệu quả hơn việc chỉ hoàn tất hình thức.","sources":["TL6"]},{"id":180,"section":7,"prompt":"Những nhận định nào đúng theo các biểu đồ kỹ năng trong slide Nhập Môn KHDL & TTNT?","options":["69% là điểm Coursera tối thiểu để được thi.","GenAI đứng đầu bảng kỹ năng tăng nhanh được trình bày.","Analytical thinking đứng đầu biểu đồ kỹ năng cốt lõi năm 2025 với mức 69%.","Hai biểu đồ chỉ mô tả kỹ năng sửa chữa phần cứng."],"correct":[1,2],"explanation":"Cần phân biệt hai biểu đồ và không nhầm con số 69% với điều kiện học phần 80% trên Coursera.","sources":["TL6"]}]}</script>
+  <script id="quiz-engine">
+    "use strict";
+    const QuizEngine = (() => {
+      const sameSet = (a, b) => a.length === b.length && new Set(a).size === a.length && a.every(value => b.includes(value));
+      const isFinished = session => session.endedAt !== null;
+      function create(ids, config, version, now) {
+        return { version, ids: [...ids], config: { ...config }, startedAt: now,
+          deadline: now + config.duration * 60000, endedAt: null, finishReason: null,
+          cursor: 0, answers: {}, view: "quiz" };
+      }
+      function status(session, question) {
+        const answer = session.answers[question.id];
+        if (!answer || !answer.submitted) return "pending";
+        return sameSet(answer.selected, question.correct) ? "correct" : "wrong";
+      }
+      function summary(session, questions) {
+        const result = { total: session.ids.length, correct: 0, wrong: 0, pending: 0 };
+        for (const id of session.ids) result[status(session, questions.get(id))] += 1;
+        result.answered = result.correct + result.wrong;
+        result.score = result.total ? result.correct / result.total * 10 : 0;
+        return result;
+      }
+      function select(session, question, index, now) {
+        if (isFinished(session) || session.ids[session.cursor] !== question.id || !Number.isInteger(index) || index < 0 || index > 3) return "ignored";
+        if (now >= session.deadline) return "expired";
+        const answer = session.answers[question.id] || { selected: [], submitted: false };
+        if (answer.submitted) return "ignored";
+        if (question.correct.length === 1) answer.selected = [index];
+        else if (answer.selected.includes(index)) answer.selected = answer.selected.filter(value => value !== index);
+        else answer.selected.push(index);
+        answer.selected.sort((a, b) => a - b);
+        answer.submitted = answer.selected.length === question.correct.length;
+        session.answers[question.id] = answer;
+        return answer.submitted ? "graded" : "partial";
+      }
+      function finish(session, reason, now) {
+        if (isFinished(session)) return false;
+        session.endedAt = reason === "timeout" ? session.deadline : Math.max(session.startedAt, Math.min(now, session.deadline));
+        session.finishReason = reason;
+        return true;
+      }
+      function remaining(session, now) {
+        const at = isFinished(session) ? session.endedAt : now;
+        return Math.max(0, Math.min(session.config.duration * 60, Math.ceil((session.deadline - at) / 1000)));
+      }
+      function restore(raw, questions, version) {
+        try {
+          const s = JSON.parse(raw);
+          if (!s || s.version !== version || !Array.isArray(s.ids) || s.ids.length < 1 || s.ids.length > questions.size) return null;
+          if (new Set(s.ids).size !== s.ids.length || s.ids.some(id => !questions.has(id))) return null;
+          if (!s.config || !Number.isInteger(s.config.duration) || s.config.duration < 1 || s.config.duration > 180) return null;
+          if (typeof s.config.label !== "string" || s.config.label.length > 200 || typeof s.config.shuffle !== "boolean") return null;
+          if (!Number.isFinite(s.startedAt) || s.startedAt < 0 || s.deadline !== s.startedAt + s.config.duration * 60000) return null;
+          if (!Number.isInteger(s.cursor) || s.cursor < 0 || s.cursor >= s.ids.length) return null;
+          if (!s.answers || typeof s.answers !== "object" || Array.isArray(s.answers)) return null;
+          if (!["quiz", "results"].includes(s.view)) return null;
+          if (s.endedAt !== null && (!Number.isFinite(s.endedAt) || s.endedAt < s.startedAt || s.endedAt > s.deadline || !["complete", "manual", "timeout"].includes(s.finishReason))) return null;
+          if (s.endedAt === null && (s.finishReason !== null || s.view !== "quiz")) return null;
+          for (const [key, answer] of Object.entries(s.answers)) {
+            const id = Number(key);
+            if (!s.ids.includes(id) || !answer || typeof answer.submitted !== "boolean" || !Array.isArray(answer.selected)) return null;
+            if (answer.selected.some(value => !Number.isInteger(value) || value < 0 || value > 3)) return null;
+            if (new Set(answer.selected).size !== answer.selected.length) return null;
+            const count = questions.get(id).correct.length;
+            if (answer.selected.length > count || answer.submitted !== (answer.selected.length === count)) return null;
+          }
+          if (s.finishReason === "complete" && summary(s, questions).answered !== s.ids.length) return null;
+          return s;
+        } catch { return null; }
+      }
+      return Object.freeze({ sameSet, create, status, summary, select, finish, remaining, restore, isFinished });
+    })();
+  </script>
+  <script id="quiz-app">
+    "use strict";
+    (() => {
+      const DATA = JSON.parse(document.getElementById("quiz-data").textContent);
+      const Q = new Map(DATA.questions.map(question => [question.id, question]));
+      const TOPICS = new Map(DATA.sections.map(section => [section.id, section]));
+      const KEY = "khdl-ttnt-quiz-v1";
+      const $ = id => document.getElementById(id);
+      const letters = "ABCD";
+      const scoreText = score => score.toLocaleString("vi-VN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const pad = n => String(n).padStart(3, "0");
+      const clock = seconds => `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
+      const node = (tag, className, text) => {
+        const element = document.createElement(tag);
+        if (className) element.className = className;
+        if (text !== undefined) element.textContent = text;
+        return element;
+      };
+      let session = null;
+      let interval = null;
+      let activeView = "setup";
+      let reviewFilter = "all";
+      let lowTimeAnnounced = false;
+      let storageAvailable = true;
+      const announce = message => { $("announcer").textContent = message; };
+      const currentQuestion = () => Q.get(session.ids[session.cursor]);
+      function save() {
+        if (!session) return;
+        try {
+          localStorage.setItem(KEY, JSON.stringify(session));
+          storageAvailable = true;
+        } catch { storageAvailable = false; }
+        $("saveStatus").textContent = storageAvailable
+          ? "Tiến độ tự lưu trên trình duyệt này."
+          : "Tiến độ hiện chỉ được giữ trong tab này.";
+      }
+      function setView(view) {
+        activeView = view;
+        $("setupView").hidden = view !== "setup";
+        $("quizView").hidden = view !== "quiz";
+        $("resultsView").hidden = view !== "results";
+      }
+      function focusElement(element, scroll = false) {
+        element.focus({ preventScroll: true });
+        if (scroll) element.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "nearest" });
+      }
+      function setupReferences() {
+        for (const topic of DATA.sections) {
+          const option = node("option", "", `${topic.title} · ${topic.count} câu`);
+          option.value = String(topic.id);
+          $("topicSelect").append(option);
+          $("topicReferences").append(node("li", "", `${topic.title} (${topic.count} câu)`));
+        }
+        for (const [id, title] of Object.entries(DATA.sources)) $("sourceReferences").append(node("li", "", `${id} — ${title}`));
+        for (const note of DATA.notes) {
+          const li = node("li");
+          li.append(node("strong", "", note.title + ". "), document.createTextNode(note.text));
+          $("correctionReferences").append(li);
+        }
+      }
+      function availableQuestions() {
+        const topic = $("topicSelect").value;
+        return DATA.questions.filter(question => topic === "all" || question.section === Number(topic));
+      }
+      function updateSetup(resetCount = false) {
+        const available = availableQuestions().length;
+        $("questionCount").max = String(available);
+        if (resetCount) $("questionCount").value = String(available);
+        $("countHint").textContent = `Từ 1 đến ${available} câu.`;
+        const count = Number($("questionCount").value);
+        const duration = Number($("durationMinutes").value);
+        $("startDescription").textContent = count >= 1 && count <= available && duration >= 1 && duration <= 180
+          ? `${count} câu · ${duration} phút · Chấm và giải thích tức thì`
+          : "Chọn số câu và thời gian trong khoảng cho phép.";
+      }
+      function shuffled(values) {
+        const items = [...values];
+        for (let index = items.length - 1; index > 0; index--) {
+          const other = Math.floor(Math.random() * (index + 1));
+          [items[index], items[other]] = [items[other], items[index]];
+        }
+        return items;
+      }
+      function start(ids, config) {
+        clearInterval(interval);
+        session = QuizEngine.create(ids, config, DATA.version, Date.now());
+        lowTimeAnnounced = false;
+        reviewFilter = "all";
+        setView("quiz");
+        save();
+        renderQuestion("question");
+        runTimer();
+        announce(`Đã bắt đầu ${ids.length} câu, thời gian ${config.duration} phút.`);
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+      function startFromForm(event) {
+        event.preventDefault();
+        if (!$("setupForm").reportValidity()) return;
+        const count = Number($("questionCount").value);
+        const duration = Number($("durationMinutes").value);
+        const topic = $("topicSelect").value;
+        const shuffle = $("shuffleQuestions").checked;
+        let ids = availableQuestions().map(question => question.id);
+        if (!Number.isInteger(count) || count < 1 || count > ids.length || !Number.isInteger(duration) || duration < 1 || duration > 180) return;
+        if (shuffle) ids = shuffled(ids);
+        start(ids.slice(0, count), { duration, shuffle, topic, label: topic === "all" ? "Tất cả chủ đề" : TOPICS.get(Number(topic)).title });
+      }
+      function updateTimer() {
+        if (!session) return;
+        const remaining = QuizEngine.remaining(session, Date.now());
+        $("timerText").textContent = clock(remaining);
+        $("timerText").setAttribute("aria-label", `${QuizEngine.isFinished(session) ? "Thời gian còn lại khi kết thúc" : "Thời gian còn lại"}: ${Math.floor(remaining / 60)} phút ${remaining % 60} giây`);
+        $("timerLabel").textContent = QuizEngine.isFinished(session) ? "Đã dừng" : "Còn lại";
+        $("timerMetric").classList.toggle("urgent", !QuizEngine.isFinished(session) && remaining <= 60);
+      }
+      function tick() {
+        if (!session || QuizEngine.isFinished(session)) return;
+        if (Date.now() >= session.deadline) {
+          endSession("timeout", true);
+          return;
+        }
+        updateTimer();
+        if (!lowTimeAnnounced && QuizEngine.remaining(session, Date.now()) <= 60) {
+          lowTimeAnnounced = true;
+          announce("Lượt ôn còn dưới một phút.");
+        }
+      }
+      function runTimer() {
+        clearInterval(interval);
+        updateTimer();
+        if (!session || QuizEngine.isFinished(session)) return;
+        tick();
+        if (!QuizEngine.isFinished(session)) interval = setInterval(tick, 500);
+      }
+      function updateChrome() {
+        const tally = QuizEngine.summary(session, Q);
+        $("quizHeading").textContent = session.config.label;
+        $("sessionEyebrow").textContent = QuizEngine.isFinished(session) ? "Xem lại & ghi nhớ" : "Lượt ôn của bạn";
+        $("liveScore").textContent = scoreText(tally.score);
+        $("progressText").textContent = `${tally.answered} / ${tally.total}`;
+        $("quizProgress").max = tally.total;
+        $("quizProgress").value = tally.answered;
+        $("correctCount").textContent = tally.correct;
+        $("wrongCount").textContent = tally.wrong;
+        $("pendingCount").textContent = tally.pending;
+        $("finishButton").textContent = QuizEngine.isFinished(session) ? "← Về bảng tổng kết" : "Kết thúc & xem điểm";
+        $("completeBanner").hidden = !QuizEngine.isFinished(session);
+        $("completeText").textContent = session.finishReason === "complete"
+          ? "Đã trả lời hết các câu! Đồng hồ đã dừng. Bạn có thể đọc lại giải thích."
+          : "Lượt ôn đã kết thúc. Bạn có thể xem đáp án và giải thích của mọi câu.";
+        updateTimer();
+        renderMap();
+      }
+      function renderMap() {
+        const fragment = document.createDocumentFragment();
+        session.ids.forEach((id, index) => {
+          const question = Q.get(id);
+          const status = QuizEngine.status(session, question);
+          const partial = !QuizEngine.isFinished(session) && status === "pending" && (session.answers[id]?.selected.length || 0) > 0;
+          const label = { correct: "đúng", wrong: "sai", pending: partial ? "đang chọn" : "chưa hoàn thành" }[status];
+          const button = node("button", `map-item ${status === "pending" ? "" : status}${partial ? " partial" : ""}${index === session.cursor ? " current" : ""}`, pad(id));
+          button.type = "button";
+          button.dataset.index = String(index);
+          button.setAttribute("aria-label", `Câu ${pad(id)}, ${label}`);
+          if (index === session.cursor) button.setAttribute("aria-current", "step");
+          fragment.append(button);
+        });
+        $("questionMap").replaceChildren(fragment);
+      }
+      function renderQuestion(focus = null) {
+        const question = currentQuestion();
+        const answer = session.answers[question.id] || { selected: [], submitted: false };
+        const revealed = answer.submitted || QuizEngine.isFinished(session);
+        const status = QuizEngine.status(session, question);
+        $("questionPosition").textContent = `Câu ${session.cursor + 1} / ${session.ids.length}`;
+        $("originalNumber").textContent = `  ·  Số gốc ${pad(question.id)}`;
+        $("typePill").textContent = `Chọn ${question.correct.length} đáp án`;
+        $("typePill").classList.toggle("multiple", question.correct.length > 1);
+        $("questionTopic").textContent = `Phần ${question.section} · ${TOPICS.get(question.section).title}`;
+        $("questionTitle").textContent = question.prompt;
+        $("selectionHint").textContent = revealed
+          ? (answer.submitted ? "Đã chấm điểm. Đáp án và giải thích ở ngay bên dưới." : "Câu này chưa được trả lời đủ khi kết thúc lượt ôn.")
+          : question.correct.length === 1
+            ? "Chọn một phương án để xem kết quả và giải thích ngay."
+            : `Đã chọn ${answer.selected.length}/${question.correct.length}. Tự chấm khi chọn đủ; bấm lại để bỏ chọn trước khi đủ.`;
+        const fragment = document.createDocumentFragment();
+        question.options.forEach((text, index) => {
+          const selected = answer.selected.includes(index);
+          const correct = question.correct.includes(index);
+          const button = node("button", "option");
+          button.type = "button";
+          button.dataset.option = String(index);
+          button.disabled = revealed;
+          button.setAttribute("aria-pressed", String(selected));
+          if (selected && !revealed) button.classList.add("selected");
+          if (revealed && correct) button.classList.add("is-correct");
+          if (revealed && selected && !correct) button.classList.add("is-wrong");
+          button.append(node("span", "option-letter", letters[index]));
+          const copy = node("span", "option-copy");
+          copy.append(document.createTextNode(text));
+          if (revealed && correct) copy.append(node("span", "option-badge", selected ? "✓ Bạn chọn · Đáp án đúng" : "✓ Đáp án đúng"));
+          else if (revealed && selected) copy.append(node("span", "option-badge", "× Bạn chọn · Chưa đúng"));
+          else if (!revealed && selected) copy.append(node("span", "option-badge", "Đã chọn"));
+          button.append(copy);
+          fragment.append(button);
+        });
+        $("options").replaceChildren(fragment);
+        $("feedback").hidden = !revealed;
+        if (revealed) {
+          $("feedback").className = `feedback${status === "wrong" ? " wrong" : status === "pending" ? " unanswered" : ""}`;
+          $("feedbackTitle").textContent = status === "correct" ? "✓ Chính xác!" : status === "wrong" ? "Chưa đúng — cùng xem lại nhé." : "Câu chưa hoàn thành";
+          const chosen = answer.selected.length ? answer.selected.map(index => letters[index]).join(", ") : "Chưa chọn";
+          $("feedbackKey").textContent = `Đáp án đúng: ${question.correct.map(index => letters[index]).join(", ")} · Bạn chọn: ${chosen}`;
+          $("feedbackExplanation").textContent = question.explanation;
+          $("feedbackSources").replaceChildren(document.createTextNode("Tham chiếu:"));
+          for (const source of question.sources) {
+            const chip = node("span", "source-chip", source);
+            chip.title = DATA.sources[source];
+            $("feedbackSources").append(chip);
+          }
+        }
+        $("previousQuestion").disabled = session.cursor === 0;
+        $("nextQuestion").disabled = session.cursor === session.ids.length - 1;
+        updateChrome();
+        if (focus === "question") focusElement($("questionTitle"));
+        else if (focus === "feedback") focusElement($("feedback"), true);
+        else if (Number.isInteger(focus)) $("options").children[focus]?.focus({ preventScroll: true });
+      }
+      function selectAnswer(index) {
+        if (!session || activeView !== "quiz") return;
+        const question = currentQuestion();
+        const result = QuizEngine.select(session, question, index, Date.now());
+        if (result === "expired") { endSession("timeout", true); return; }
+        if (result === "ignored") return;
+        if (result === "graded" && QuizEngine.summary(session, Q).answered === session.ids.length) endSession("complete", false);
+        save();
+        renderQuestion(result === "graded" ? "feedback" : index);
+        if (result === "graded") announce(QuizEngine.status(session, question) === "correct" ? "Chính xác. Giải thích đã hiển thị." : "Câu trả lời chưa đúng. Đáp án đúng và giải thích đã hiển thị.");
+      }
+      function goTo(index) {
+        if (!session || index < 0 || index >= session.ids.length) return;
+        if (!QuizEngine.isFinished(session) && Date.now() >= session.deadline) { endSession("timeout", true); return; }
+        session.cursor = index;
+        session.view = "quiz";
+        setView("quiz");
+        save();
+        renderQuestion("question");
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+      function endSession(reason, showResults) {
+        if (!session) return;
+        if (!QuizEngine.isFinished(session) && Date.now() >= session.deadline) reason = "timeout";
+        QuizEngine.finish(session, reason, Date.now());
+        clearInterval(interval);
+        updateTimer();
+        if (showResults) {
+          session.view = "results";
+          save();
+          renderResults();
+        } else {
+          session.view = "quiz";
+          save();
+        }
+      }
+      function renderResults() {
+        setView("results");
+        const tally = QuizEngine.summary(session, Q);
+        const elapsed = Math.max(0, Math.floor((session.endedAt - session.startedAt) / 1000));
+        $("finalScore").textContent = scoreText(tally.score);
+        $("scoreRing").style.setProperty("--score", `${tally.score * 10}%`);
+        $("scoreRing").setAttribute("aria-label", `Điểm ${scoreText(tally.score)} trên 10`);
+        $("resultHeading").textContent = session.finishReason === "timeout" ? "Đã hết thời gian lượt ôn." : tally.correct === tally.total ? "Tuyệt vời, bạn đã đúng tất cả!" : "Thêm một bước hiểu bài hơn.";
+        $("resultDescription").textContent = `${session.config.label} · ${tally.total} câu · ${tally.answered} câu đã trả lời. Nhấn vào từng câu bên dưới để đọc lại giải thích.`;
+        $("resultFormula").textContent = `Điểm = ${tally.correct} ÷ ${tally.total} × 10 = ${scoreText(tally.score)}. Câu sai hoặc chưa hoàn thành được 0 điểm.`;
+        $("resultCorrect").textContent = tally.correct;
+        $("resultWrong").textContent = tally.wrong;
+        $("resultUnanswered").textContent = tally.pending;
+        $("resultTime").textContent = clock(elapsed);
+        const missed = tally.wrong + tally.pending;
+        $("retryMissed").hidden = missed === 0;
+        $("retryMissed").textContent = `Ôn lại ${missed} câu chưa đúng`;
+        $("topicResults").replaceChildren();
+        for (const topic of DATA.sections) {
+          const ids = session.ids.filter(id => Q.get(id).section === topic.id);
+          if (!ids.length) continue;
+          const correct = ids.filter(id => QuizEngine.status(session, Q.get(id)) === "correct").length;
+          const row = node("div", "topic-row");
+          const head = node("div", "topic-row-head");
+          head.append(node("span", "", topic.title), node("strong", "", `${correct}/${ids.length}`));
+          const progress = node("progress");
+          progress.max = ids.length;
+          progress.value = correct;
+          progress.setAttribute("aria-label", `${topic.title}: đúng ${correct} trong ${ids.length} câu`);
+          row.append(head, progress);
+          $("topicResults").append(row);
+        }
+        renderReview();
+        focusElement($("resultHeading"));
+        window.scrollTo({ top: 0, behavior: "instant" });
+        announce(`Lượt ôn kết thúc. Đúng ${tally.correct} trong ${tally.total} câu, đạt ${scoreText(tally.score)} điểm.`);
+      }
+      function renderReview() {
+        document.querySelectorAll("[data-review-filter]").forEach(button => button.setAttribute("aria-pressed", String(button.dataset.reviewFilter === reviewFilter)));
+        const fragment = document.createDocumentFragment();
+        let count = 0;
+        session.ids.forEach((id, index) => {
+          const question = Q.get(id);
+          const status = QuizEngine.status(session, question);
+          if (reviewFilter !== "all" && status !== reviewFilter) return;
+          count++;
+          const button = node("button", "review-item");
+          button.type = "button";
+          button.dataset.reviewIndex = String(index);
+          button.append(node("span", "review-number", pad(id)));
+          const copy = node("span", "review-copy");
+          copy.append(node("p", "", question.prompt), node("small", "", { correct: "Trả lời đúng", wrong: "Trả lời sai", pending: "Chưa hoàn thành" }[status]));
+          button.append(copy, node("span", `review-status ${status === "correct" ? "text-green" : status === "wrong" ? "text-red" : "muted"}`, { correct: "✓", wrong: "×", pending: "○" }[status]));
+          fragment.append(button);
+        });
+        if (!count) fragment.append(node("p", "empty-state", "Không có câu nào thuộc nhóm này."));
+        $("reviewList").replaceChildren(fragment);
+      }
+      $("setupForm").addEventListener("submit", startFromForm);
+      $("topicSelect").addEventListener("change", () => updateSetup(true));
+      $("questionCount").addEventListener("input", () => updateSetup());
+      $("durationMinutes").addEventListener("input", () => updateSetup());
+      $("options").addEventListener("click", event => {
+        const button = event.target.closest("[data-option]");
+        if (button) selectAnswer(Number(button.dataset.option));
+      });
+      $("questionMap").addEventListener("click", event => {
+        const button = event.target.closest("[data-index]");
+        if (button) goTo(Number(button.dataset.index));
+      });
+      $("previousQuestion").addEventListener("click", () => goTo(session.cursor - 1));
+      $("nextQuestion").addEventListener("click", () => goTo(session.cursor + 1));
+      $("finishButton").addEventListener("click", () => endSession("manual", true));
+      $("bannerResults").addEventListener("click", () => endSession("manual", true));
+      $("reviewList").addEventListener("click", event => {
+        const button = event.target.closest("[data-review-index]");
+        if (button) goTo(Number(button.dataset.reviewIndex));
+      });
+      document.querySelectorAll("[data-review-filter]").forEach(button => button.addEventListener("click", () => {
+        reviewFilter = button.dataset.reviewFilter;
+        renderReview();
+      }));
+      $("retryAll").addEventListener("click", () => start([...session.ids], { ...session.config }));
+      $("retryMissed").addEventListener("click", () => {
+        const ids = session.ids.filter(id => QuizEngine.status(session, Q.get(id)) !== "correct");
+        if (ids.length) start(ids, { ...session.config, label: "Ôn lại câu chưa đúng" });
+      });
+      $("changeSetup").addEventListener("click", () => {
+        clearInterval(interval);
+        setView("setup");
+        updateSetup();
+        window.scrollTo({ top: 0, behavior: "instant" });
+        $("topicSelect").focus({ preventScroll: true });
+      });
+      document.addEventListener("keydown", event => {
+        if (activeView !== "quiz" || !session || event.altKey || event.ctrlKey || event.metaKey || event.repeat) return;
+        if (event.target.closest("input, textarea, select, [contenteditable=true]")) return;
+        if (/^[1-4]$/.test(event.key)) { event.preventDefault(); selectAnswer(Number(event.key) - 1); }
+        else if (event.key === "ArrowLeft") { event.preventDefault(); goTo(session.cursor - 1); }
+        else if (event.key === "ArrowRight") { event.preventDefault(); goTo(session.cursor + 1); }
+      });
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(); });
+      window.addEventListener("pageshow", tick);
+      window.addEventListener("pagehide", save);
+      setupReferences();
+      updateSetup();
+      try { session = QuizEngine.restore(localStorage.getItem(KEY), Q, DATA.version); }
+      catch { storageAvailable = false; $("saveStatus").textContent = "Tiến độ hiện chỉ được giữ trong tab này."; }
+      if (session) {
+        if (!QuizEngine.isFinished(session) && Date.now() >= session.deadline) endSession("timeout", true);
+        else if (QuizEngine.isFinished(session) && session.view === "results") renderResults();
+        else {
+          setView("quiz");
+          if (!QuizEngine.isFinished(session) && QuizEngine.summary(session, Q).answered === session.ids.length) endSession("complete", false);
+          renderQuestion();
+          runTimer();
+          announce("Đã khôi phục lượt ôn gần nhất. Thời gian tiếp tục tính từ lúc bắt đầu.");
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
