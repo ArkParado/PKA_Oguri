@@ -425,8 +425,12 @@
               </div>
             </div>
             <div class="toggle-line">
-              <label for="shuffleQuestions">Xáo trộn thứ tự câu hỏi<small>Thứ tự phương án khớp với tài liệu tương ứng.</small></label>
+              <label for="shuffleQuestions">Xáo trộn thứ tự câu hỏi<small>Thay đổi thứ tự các câu trong lượt ôn.</small></label>
               <input id="shuffleQuestions" name="shuffle" type="checkbox" role="switch">
+            </div>
+            <div class="toggle-line">
+              <label for="shuffleAnswers">Xáo trộn đáp án<small>Đảo vị trí các phương án A–E. Tắt để giữ thứ tự trong tài liệu.</small></label>
+              <input id="shuffleAnswers" name="shuffleAnswers" type="checkbox" role="switch">
             </div>
             <button class="button primary full" type="submit">Bắt đầu ôn tập <span aria-hidden="true">→</span></button>
             <p id="startDescription" class="start-description">148 câu · 60 phút · Chấm theo ngân hàng PDF</p>
@@ -467,6 +471,7 @@
           <section class="feedback" id="feedback" hidden tabindex="-1" aria-labelledby="feedbackTitle">
             <h3 id="feedbackTitle"></h3>
             <p class="feedback-key" id="feedbackKey"></p>
+            <p class="source-context" id="answerOrderNote" hidden style="margin-bottom:10px">Các ký hiệu A–E trong lời giải và ghi chú dùng thứ tự gốc. Đối chiếu nhãn “Gốc” trên từng phương án.</p>
             <p class="feedback-explanation" id="feedbackExplanation"></p>
             <p class="source-note" id="sourceNote" hidden></p>
             <div class="feedback-sources" id="feedbackSources"></div>
@@ -561,7 +566,7 @@
       const sameSet = (a, b) => a.length === b.length && new Set(a).size === a.length && a.every(value => b.includes(value));
       const isFinished = session => session.endedAt !== null;
       function create(ids, config, version, now) {
-        return { version, id: globalThis.crypto?.randomUUID?.() || `${now}-${Math.random().toString(36).slice(2)}`, ids: [...ids], config: { ...config }, startedAt: now,
+        return { version, id: globalThis.crypto?.randomUUID?.() || `${now}-${Math.random().toString(36).slice(2)}`, ids: [...ids], config: { shuffleAnswers: false, ...config }, startedAt: now,
           deadline: now + config.duration * 60000, endedAt: null, finishReason: null,
           cursor: 0, answers: {}, view: "quiz" };
       }
@@ -609,6 +614,17 @@
           if (legacy && s.ids.some(id => questions.get(id).dataset !== "compiled")) return null;
           if (!s.config || !Number.isInteger(s.config.duration) || s.config.duration < 1 || s.config.duration > 180) return null;
           if (typeof s.config.label !== "string" || s.config.label.length > 200 || typeof s.config.shuffle !== "boolean") return null;
+          if (s.config.shuffleAnswers === undefined) s.config.shuffleAnswers = false;
+          if (typeof s.config.shuffleAnswers !== "boolean") return null;
+          if (s.config.shuffleAnswers) {
+            if (!s.optionOrder || typeof s.optionOrder !== "object" || Array.isArray(s.optionOrder) || Object.keys(s.optionOrder).length !== s.ids.length) return null;
+            for (const id of s.ids) {
+              const order = s.optionOrder[id];
+              const count = questions.get(id).options.length;
+              if (!Array.isArray(order) || order.length !== count || new Set(order).size !== count
+                || order.some(index => !Number.isInteger(index) || index < 0 || index >= count)) return null;
+            }
+          } else delete s.optionOrder;
           if (legacy) s.config.dataset = "compiled";
           if (!["bank", "compiled", "all"].includes(s.config.dataset)) return null;
           if (s.config.dataset !== "all" && s.ids.some(id => questions.get(id).dataset !== s.config.dataset)) return null;
@@ -668,6 +684,9 @@
       let historySaved = true;
       const announce = message => { $("announcer").textContent = message; };
       const currentQuestion = () => Q.get(session.ids[session.cursor]);
+      // Orders map visible positions to source indices; grading always uses source indices.
+      const optionOrder = question => session.config.shuffleAnswers
+        ? session.optionOrder[question.id] : question.options.map((_, index) => index);
       function save() {
         if (!session) return;
         try {
@@ -826,7 +845,7 @@
         const count = Number($("questionCount").value);
         const duration = Number($("durationMinutes").value);
         $("startDescription").textContent = Number.isInteger(count) && count >= 1 && count <= available && Number.isInteger(duration) && duration >= 1 && duration <= 180
-          ? `${count} câu · ${duration} phút · ${DATASETS.get(dataset).label}`
+          ? `${count} câu · ${duration} phút · ${DATASETS.get(dataset).label}${$("shuffleAnswers").checked ? " · Xáo trộn đáp án" : ""}`
           : "Chọn số câu và thời gian trong khoảng cho phép.";
       }
       function shuffled(values) {
@@ -841,6 +860,9 @@
         clearInterval(interval);
         recordResult();
         session = QuizEngine.create(ids, config, DATA.version, Date.now());
+        if (session.config.shuffleAnswers) {
+          session.optionOrder = Object.fromEntries(ids.map(id => [id, shuffled(Q.get(id).options.map((_, index) => index))]));
+        }
         lowTimeAnnounced = false;
         reviewFilter = "all";
         setView("quiz");
@@ -857,12 +879,13 @@
         const duration = Number($("durationMinutes").value);
         const topic = $("topicSelect").value;
         const shuffle = $("shuffleQuestions").checked;
+        const shuffleAnswers = $("shuffleAnswers").checked;
         let ids = availableQuestions().map(question => question.id);
         if (!Number.isInteger(count) || count < 1 || count > ids.length || !Number.isInteger(duration) || duration < 1 || duration > 180) return;
         tick();
         if (session && !QuizEngine.isFinished(session) && !confirm("Bắt đầu lượt mới sẽ xóa tiến độ lượt đang làm. Tiếp tục?")) return;
         if (shuffle) ids = shuffled(ids);
-        start(ids.slice(0, count), { dataset: currentDataset(), duration, shuffle, topic, label: topic === "all" ? DATASETS.get(currentDataset()).label : TOPICS.get(Number(topic)).title });
+        start(ids.slice(0, count), { dataset: currentDataset(), duration, shuffle, shuffleAnswers, topic, label: topic === "all" ? DATASETS.get(currentDataset()).label : TOPICS.get(Number(topic)).title });
       }
       function updateTimer() {
         if (!session) return;
@@ -938,6 +961,8 @@
       }
       function renderQuestion(focus = null) {
         const question = currentQuestion();
+        const order = optionOrder(question);
+        const displayLetters = indices => order.flatMap((original, position) => indices.includes(original) ? [letters[position]] : []).join(", ");
         const isBank = question.dataset === "bank";
         const topic = TOPICS.get(question.section);
         const answer = session.answers[question.id] || { selected: [], submitted: false };
@@ -972,30 +997,34 @@
           ? (answer.submitted ? "Đã chấm điểm. Đáp án và giải thích ở ngay bên dưới." : "Câu này chưa được trả lời đủ khi kết thúc lượt ôn.")
           : question.correct.length === 1
             ? "Chọn một phương án để xem kết quả và giải thích ngay."
-            : `Đã chọn ${answer.selected.length}/${question.correct.length}. Tự chấm khi chọn đủ; bấm lại để bỏ chọn trước khi đủ.`;
+             : `Đã chọn ${answer.selected.length}/${question.correct.length}. Tự chấm khi chọn đủ; bấm lại để bỏ chọn trước khi đủ.`;
+        if (session.config.shuffleAnswers) $("selectionHint").textContent += " Đáp án đã xáo trộn.";
         const fragment = document.createDocumentFragment();
-        question.options.forEach((text, index) => {
+        order.forEach((index, position) => {
+          const text = question.options[index];
           const selected = answer.selected.includes(index);
           const correct = question.correct.includes(index);
           const button = node("button", "option");
           button.type = "button";
-          button.dataset.option = String(index);
+          button.dataset.option = String(position);
           button.disabled = revealed;
           button.setAttribute("aria-pressed", String(selected));
           if (selected && !revealed) button.classList.add("selected");
           if (revealed && correct) button.classList.add("is-correct");
           if (revealed && selected && !correct) button.classList.add("is-wrong");
-          button.append(node("span", "option-letter", letters[index]));
+          button.append(node("span", "option-letter", letters[position]));
           const copy = node("span", "option-copy");
           copy.append(document.createTextNode(text));
           if (revealed && correct) copy.append(node("span", "option-badge", `${selected ? "✓ Bạn chọn · " : "✓ "}${isBank ? "Được đánh dấu trong PDF" : "Đáp án đúng"}`));
           else if (revealed && selected) copy.append(node("span", "option-badge", isBank ? "× Bạn chọn · Không thuộc khóa PDF" : "× Bạn chọn · Chưa đúng"));
           else if (!revealed && selected) copy.append(node("span", "option-badge", "Đã chọn"));
+          if (revealed && session.config.shuffleAnswers) copy.append(node("span", "option-badge", `Gốc: ${letters[index]}`));
           button.append(copy);
           fragment.append(button);
         });
         $("options").replaceChildren(fragment);
         $("feedback").hidden = !revealed;
+        $("answerOrderNote").hidden = !session.config.shuffleAnswers;
         if (revealed) {
           $("feedback").className = `feedback${status === "wrong" ? " wrong" : status === "pending" ? " unanswered" : ""}`;
           $("feedbackTitle").textContent = status === "correct"
@@ -1003,8 +1032,9 @@
             : status === "wrong"
               ? (isBank ? "Chưa khớp đáp án ngân hàng." : "Chưa đúng — cùng xem lại nhé.")
               : "Câu chưa hoàn thành";
-          const chosen = answer.selected.length ? answer.selected.map(index => letters[index]).join(", ") : "Chưa chọn";
-          $("feedbackKey").textContent = `${isBank ? "Đáp án theo PDF" : "Đáp án đúng"}: ${question.correct.map(index => letters[index]).join(", ")} · Bạn chọn: ${chosen}`;
+          const chosen = answer.selected.length ? displayLetters(answer.selected) : "Chưa chọn";
+          $("feedbackKey").textContent = `${session.config.shuffleAnswers ? "Đáp án đúng ở lượt này" : isBank ? "Đáp án theo PDF" : "Đáp án đúng"}: ${displayLetters(question.correct)} · Bạn chọn: ${chosen}`;
+          if (session.config.shuffleAnswers) $("feedbackKey").textContent += ` · Khóa gốc${isBank ? " PDF" : ""}: ${question.correct.map(index => letters[index]).join(", ")}`;
           $("feedbackExplanation").textContent = question.explanation;
           $("sourceNote").hidden = !question.sourceNote;
           $("sourceNote").textContent = question.sourceNote ? `Lưu ý kiến thức / bản nguồn: ${question.sourceNote}` : "";
@@ -1025,7 +1055,7 @@
       function selectAnswer(index) {
         if (!session || activeView !== "quiz") return;
         const question = currentQuestion();
-        const result = QuizEngine.select(session, question, index, Date.now());
+        const result = QuizEngine.select(session, question, optionOrder(question)[index], Date.now());
         if (result === "expired") { endSession("timeout", true); return; }
         if (result === "ignored") return;
         if (result === "graded" && QuizEngine.summary(session, Q).answered === session.ids.length) endSession("complete", false);
@@ -1073,6 +1103,7 @@
         $("scoreRing").setAttribute("aria-label", `Điểm ${scoreText(tally.score)} trên 10`);
         $("resultHeading").textContent = session.finishReason === "timeout" ? "Đã hết thời gian lượt ôn." : tally.correct === tally.total ? "Tuyệt vời, bạn đã đúng tất cả!" : "Thêm một bước hiểu bài hơn.";
         $("resultDescription").textContent = `${session.config.label} · ${tally.total} câu · ${tally.answered} câu đã trả lời. Nhấn vào từng câu bên dưới để đọc lại giải thích.`;
+        if (session.config.shuffleAnswers) $("resultDescription").textContent += " Lượt này đã xáo trộn đáp án.";
         $("resultFormula").textContent = `Điểm = ${tally.correct} ÷ ${tally.total} × 10 = ${scoreText(tally.score)}. Câu sai hoặc chưa hoàn thành được 0 điểm.`;
         const bankCount = session.ids.filter(id => Q.get(id).dataset === "bank").length;
         $("resultSource").textContent = bankCount > 0 && bankCount < tally.total
@@ -1136,6 +1167,7 @@
       $("topicSelect").addEventListener("change", () => updateSetup(true));
       $("questionCount").addEventListener("input", () => updateSetup());
       $("durationMinutes").addEventListener("input", () => updateSetup());
+      $("shuffleAnswers").addEventListener("change", () => updateSetup());
       $("options").addEventListener("click", event => {
         const button = event.target.closest("[data-option]");
         if (button) selectAnswer(Number(button.dataset.option));
